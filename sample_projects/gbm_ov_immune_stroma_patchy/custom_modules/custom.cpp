@@ -84,9 +84,9 @@ void create_cell_types( void ) 																									// done
 	// cell_defaults.phenotype.molecular.sync_to_microenvironment( &microenvironment );
 
 	// Make sure we're ready for 2D
-	cell_defaults.functions.set_orientation = up_orientation;
-	cell_defaults.phenotype.geometry.polarity = 1.0;
-	cell_defaults.phenotype.motility.restrict_to_2D = true;
+	// cell_defaults.functions.set_orientation = up_orientation;
+	// cell_defaults.phenotype.geometry.polarity = 1.0;
+	// cell_defaults.phenotype.motility.restrict_to_2D = true;
 
 	cell_defaults.functions.volume_update_function = standard_volume_update_function;
 	cell_defaults.functions.update_velocity = custom_update_cell_velocity;//standard_update_cell_velocity;
@@ -126,12 +126,12 @@ void create_cell_types( void ) 																									// done
 	// th cell creation
 	pCD = find_cell_definition("th");
 
-	pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
 	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
 	// Make sure we're ready for 2D
-	pCD->functions.set_orientation = up_orientation;
-	pCD->phenotype.geometry.polarity = 1.0;
-	pCD->phenotype.motility.restrict_to_2D = true;
+	// pCD->functions.set_orientation = up_orientation;
+	// pCD->phenotype.geometry.polarity = 1.0;
+	// pCD->phenotype.motility.restrict_to_2D = true;
 	// set functions
 	pCD->functions.update_phenotype = th_phenotype;
 	pCD->functions.update_velocity = custom_update_cell_velocity;
@@ -139,12 +139,12 @@ void create_cell_types( void ) 																									// done
 	// cancer cell creation
 	pCD = find_cell_definition("cancer");
 
-	pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
 	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
 	// Make sure we're ready for 2D
-	pCD->functions.set_orientation = up_orientation;
-	pCD->phenotype.geometry.polarity = 1.0;
-	pCD->phenotype.motility.restrict_to_2D = true;
+	// pCD->functions.set_orientation = up_orientation;
+	// pCD->phenotype.geometry.polarity = 1.0;
+	// pCD->phenotype.motility.restrict_to_2D = true;
 	// set functions
 	pCD->functions.update_phenotype = cancer_phenotype;
 	pCD->functions.update_velocity = custom_update_cell_velocity;
@@ -152,12 +152,12 @@ void create_cell_types( void ) 																									// done
 	// ctl cell creation
 	pCD = find_cell_definition("ctl");
 
-	pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
 	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
 	// Make sure we're ready for 2D
-	pCD->functions.set_orientation = up_orientation;
-	pCD->phenotype.geometry.polarity = 1.0;
-	pCD->phenotype.motility.restrict_to_2D = true;
+	// pCD->functions.set_orientation = up_orientation;
+	// pCD->phenotype.geometry.polarity = 1.0;
+	// pCD->phenotype.motility.restrict_to_2D = true;
 	// set functions
 	pCD->functions.update_phenotype = ctl_phenotype;
 	pCD->functions.update_velocity = custom_update_cell_velocity;
@@ -165,12 +165,12 @@ void create_cell_types( void ) 																									// done
 	// stroma cell creation
 	pCD = find_cell_definition("stromal");
 
-	pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
 	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
 	// Make sure we're ready for 2D
-	pCD->functions.set_orientation = up_orientation;
-	pCD->phenotype.geometry.polarity = 1.0;
-	pCD->phenotype.motility.restrict_to_2D = true;
+	// pCD->functions.set_orientation = up_orientation;
+	// pCD->phenotype.geometry.polarity = 1.0;
+	// pCD->phenotype.motility.restrict_to_2D = true;
 	// set functions
 	pCD->functions.update_phenotype = stromal_phenotype;
 	pCD->functions.update_velocity = custom_update_cell_velocity;
