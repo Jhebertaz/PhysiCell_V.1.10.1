@@ -66,6 +66,12 @@
 */
 
 #include "./custom.h"
+#include "../modules/PhysiCell_settings.h"
+
+#include <cmath>
+#include <iostream>
+#include <random>
+
 
 void create_cell_types( void ) 																									// done
 {
@@ -80,22 +86,13 @@ void create_cell_types( void ) 																									// done
 	*/
 
 	initialize_default_cell_definition();
-
-	static int wall_index = microenvironment.find_density_index("wall");
-	static int virus_index = microenvironment.find_density_index("virus");
-	static int chemokine_index = microenvironment.find_density_index("chemokine");
-
 	cell_defaults.phenotype.secretion.sync_to_microenvironment( &microenvironment );
 	cell_defaults.phenotype.molecular.sync_to_microenvironment( &microenvironment );
 
 	// Make sure we're ready for 2D
 	cell_defaults.functions.set_orientation = up_orientation;
 	cell_defaults.phenotype.geometry.polarity = 1.0;
-	// cell_defaults.phenotype.motility.restrict_to_2D = true;
-
-	cell_defaults.phenotype.molecular.fraction_released_at_death[wall_index] = 1;
-	cell_defaults.phenotype.molecular.fraction_released_at_death[virus_index] = 1;
-	cell_defaults.phenotype.molecular.fraction_released_at_death[chemokine_index] = 1;
+	cell_defaults.phenotype.motility.restrict_to_2D = true;
 
 	cell_defaults.functions.volume_update_function = standard_volume_update_function;
 	cell_defaults.functions.update_velocity = custom_update_cell_velocity;
@@ -130,6 +127,8 @@ void create_cell_types( void ) 																									// done
 	   This is a good place to set custom functions.
 	*/
 
+	static int wall_index = microenvironment.find_density_index("wall");
+	static int virus_index = microenvironment.find_density_index("virus");
 	Cell_Definition* pCD;
 
 	// th cell creation
@@ -137,13 +136,29 @@ void create_cell_types( void ) 																									// done
 
 	// Make sure we're ready for 2D
 	// set functions
-	// pCD->functions.set_orientation = up_orientation;
+	pCD->functions.set_orientation = up_orientation;
 	pCD->functions.update_phenotype = th_phenotype;
-	// pCD->functions.update_velocity = custom_update_cell_velocity;
+	pCD->functions.update_velocity = custom_update_cell_velocity;
 
 	// custom phenotype
-	// pCD->phenotype.geometry.polarity = 1.0;
+	pCD->phenotype.geometry.polarity = 1.0;
 	pCD->phenotype.geometry.radius = parameters.doubles("R_CD4");
+
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
+	pCD->phenotype.molecular.fraction_released_at_death[wall_index] = 1;
+
+	// motility
+	pCD->phenotype.motility.is_motile = true;
+	pCD->phenotype.motility.restrict_to_2D = true;
+	pCD->phenotype.motility.migration_speed = parameters.doubles("nu");
+
+
+	// cell actions
+	pCD->phenotype.secretion.uptake_rates[virus_index] = 0.0;
+	pCD->phenotype.secretion.secretion_rates[virus_index] = 0.0;
+	pCD->phenotype.motility.migration_speed = parameters.doubles("nu");
+
 
 
 	// cancer cell creation
@@ -151,13 +166,32 @@ void create_cell_types( void ) 																									// done
 
 	// Make sure we're ready for 2D
 	// set functions
-	// pCD->functions.set_orientation = up_orientation;
+	pCD->functions.set_orientation = up_orientation;
 	pCD->functions.update_phenotype = cancer_phenotype;
-	// pCD->functions.update_velocity = custom_update_cell_velocity;
+	pCD->functions.update_velocity = custom_update_cell_velocity;
 
 	// custom phenotype
-	// pCD->phenotype.geometry.polarity = 1.0;
+	pCD->phenotype.geometry.polarity = 1.0;
 	pCD->phenotype.geometry.radius = parameters.doubles("R_GBM");
+
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
+	pCD->phenotype.molecular.fraction_released_at_death[wall_index] = 1;
+
+	// motility
+	pCD->phenotype.motility.is_motile = true;
+	pCD->phenotype.motility.restrict_to_2D = true;
+	pCD->phenotype.motility.migration_speed = 0;
+
+	// mechanics
+	pCD->phenotype.mechanics.cell_cell_repulsion_strength = 0.35*pCD->phenotype.mechanics.cell_cell_repulsion_strength;
+	//setting cycle model to live
+
+	// cell actions
+	pCD->phenotype.secretion.uptake_rates[virus_index] = 0.0;
+	pCD->phenotype.secretion.secretion_rates[virus_index] = 0.0;
+	pCD->phenotype.motility.migration_speed = 0.0;
+
 
 
 	// ctl cell creation
@@ -165,14 +199,27 @@ void create_cell_types( void ) 																									// done
 
 	// Make sure we're ready for 2D
 	// set functions
-	// pCD->functions.set_orientation = up_orientation;
+	pCD->functions.set_orientation = up_orientation;
 	pCD->functions.update_phenotype = ctl_phenotype;
-	// pCD->functions.update_velocity = custom_update_cell_velocity;
+	pCD->functions.update_velocity = custom_update_cell_velocity;
 
 	// custom phenotype
-	// pCD->phenotype.geometry.polarity = 1.0;
+	pCD->phenotype.geometry.polarity = 1.0;
 	pCD->phenotype.geometry.radius = parameters.doubles("R_CD8");
 
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
+	pCD->phenotype.molecular.fraction_released_at_death[wall_index] = 1;
+
+	// motility
+	pCD->phenotype.motility.is_motile = true;
+	pCD->phenotype.motility.restrict_to_2D = true;
+	pCD->phenotype.motility.migration_speed = parameters.doubles("nu");
+
+	// cell actions
+	pCD->phenotype.secretion.uptake_rates[virus_index] = 0.0;
+	pCD->phenotype.secretion.secretion_rates[virus_index] = 0.0;
+	pCD->phenotype.motility.migration_speed = parameters.doubles("nu");
 
 	// stroma cell creation
 	pCD = find_cell_definition("stromal");
@@ -180,16 +227,28 @@ void create_cell_types( void ) 																									// done
 
 	// Make sure we're ready for 2D
 	// set functions
-	// pCD->functions.set_orientation = up_orientation;
+	pCD->functions.set_orientation = up_orientation;
 	pCD->functions.update_phenotype = stromal_phenotype;
-	// pCD->functions.update_velocity = custom_update_cell_velocity;
+	pCD->functions.update_velocity = custom_update_cell_velocity;
 
 	// custom phenotype
-	// pCD->phenotype.geometry.polarity = 1.0;
+	pCD->phenotype.geometry.polarity = 1.0;
 	pCD->phenotype.geometry.radius = parameters.doubles("R_stromal");
+
+	// pCD->phenotype.secretion.sync_to_microenvironment( &microenvironment );
+	// pCD->phenotype.molecular.sync_to_microenvironment( &microenvironment );
+	pCD->phenotype.molecular.fraction_released_at_death[wall_index] = 1;
 
 	// motility
 	pCD->phenotype.motility.is_motile = false;
+	pCD->phenotype.motility.restrict_to_2D = true;
+	pCD->phenotype.motility.migration_speed = 0;
+
+	// cell actions
+	pCD->phenotype.secretion.uptake_rates[virus_index] = parameters.doubles("u_s");
+	pCD->phenotype.secretion.secretion_rates[virus_index] = 0.0;
+	pCD->phenotype.molecular.fraction_released_at_death[virus_index] = 0;
+
 
 
 	/*
@@ -205,13 +264,6 @@ void setup_microenvironment(void) 																							// done
 {
 	// set domain parameters
 
-	// make sure not override and go back to 2D
-	if( default_microenvironment_options.simulate_2D == false )
-	{
-		std::cout << "Warning: overriding XML config option and setting to 2D!" << std::endl;
-		default_microenvironment_options.simulate_2D = true;
-	}
-
 	// put any custom code to set non-homogeneous initial conditions or
 	// extra Dirichlet nodes here.
 
@@ -219,8 +271,8 @@ void setup_microenvironment(void) 																							// done
 	// initialize BioFVM
 
 	initialize_microenvironment();
-	// testing();
-	old_testing();
+	testing();
+
 	return;
 }
 void setup_tissue( void ) 																											// done
@@ -266,31 +318,23 @@ void setup_tissue( void ) 																											// done
 
 	// load cells from your CSV file (if enabled)
 	load_cells_from_pugixml();
-	// init_persistence_time for cancer_cell
-	// init_speed for cancel_cell
 
 	return;
 }
+
+// color function
+
+// default
 std::vector<std::string> my_coloring_function( Cell* pCell )
 { return paint_by_number_cell_coloring(pCell); }
-
-
-void phenotype_function( Cell* pCell, Phenotype& phenotype, double dt )
-{ return; }
-
-void custom_function( Cell* pCell, Phenotype& phenotype , double dt )
-{ return; }
-
-void contact_function( Cell* pMe, Phenotype& phenoMe , Cell* pOther, Phenotype& phenoOther , double dt )
-{ return; }
-
+// custom
 std::vector<std::string> colouring_by_intracellular_virus_amount( Cell* pCell )
 {
 
 	std::vector< std::string > output( 4, "darkgrey" );
 
 	static int v_index = microenvironment.find_density_index( "virus");
-	// static double intracellular_virus_index = pCell->custom_data.find_variable_index( "intracellular_virus_amount" );
+	static double intracellular_virus_index = pCell->custom_data.find_variable_index( "intracellular_virus_amount" );
 
 	double p_min = 1;
 	double p_max = parameters.doubles("alpha");
@@ -306,7 +350,6 @@ std::vector<std::string> colouring_by_intracellular_virus_amount( Cell* pCell )
 			int oncoprotein = (int) round( (1.0/(p_max-p_min)) * (pCell->phenotype.molecular.internalized_total_substrates[v_index]-p_min) * 255.0 );
 			char szTempString [128]; // ceates a character array that can store 128
 			sprintf( szTempString , "rgb(%u,%u,%u)", oncoprotein, oncoprotein, 255-oncoprotein ); // puts oncoprotein, oncoprotein and 255-oncoprotein in place of u u u
-
 
 		if(pCell-> phenotype.cycle.data.current_phase_index==0)
 			{
@@ -324,11 +367,11 @@ std::vector<std::string> colouring_by_intracellular_virus_amount( Cell* pCell )
 					output[3] = "firebrick";
 			}
 		}
-		if( pCell->type == 3)
+		if(pCell->type == 3)
 		{
 			if(pCell-> phenotype.cycle.data.current_phase_index==0)
 			{
-			    output[0] = "aquamarine";
+			  output[0] = "aquamarine";
 				output[1] = "lightsteelblue";
 				output[2] = "lightskyblue";
 				output[3] = "aquamarine";
@@ -342,9 +385,9 @@ std::vector<std::string> colouring_by_intracellular_virus_amount( Cell* pCell )
 				output[3] = "aquamarine";
 			}
 		}
-		if( pCell->type == 2 && pCell->phenotype.death.dead==false)
+		if(pCell->type == 2 && pCell->phenotype.death.dead==false)
 		{
-			if( n_I>1)
+			if(n_I>1)
 			{
 				double p_min = 1;
 				int oncoprotein1 = (int) round((210-139)*(1.0/(p_max-p_min)) * (n_I-1));
@@ -391,53 +434,8 @@ std::vector<std::string> colouring_by_intracellular_virus_amount( Cell* pCell )
 }
 
 
-
-// custom from Source
-// custom version
-void custom_update_cell_velocity( Cell* pCell, Phenotype& phenotype, double dt)
-{
-	if( pCell->functions.add_cell_basement_membrane_interactions )
-	{
-		pCell->functions.add_cell_basement_membrane_interactions(pCell, phenotype,dt);
-	}
-
-	pCell->state.simple_pressure = 0.0;
-	pCell->state.neighbors.clear(); // new 1.8.0
-
-	//First check the neighbors in my current voxel
-	std::vector<Cell*>::iterator neighbor;
-	std::vector<Cell*>::iterator end = pCell->get_container()->agent_grid[pCell->get_current_mechanics_voxel_index()].end();
-	for(neighbor = pCell->get_container()->agent_grid[pCell->get_current_mechanics_voxel_index()].begin(); neighbor != end; ++neighbor)
-	{
-		pCell->custom_add_potentials(*neighbor);
-	}
-	std::vector<int>::iterator neighbor_voxel_index;
-	std::vector<int>::iterator neighbor_voxel_index_end =
-		pCell->get_container()->underlying_mesh.moore_connected_voxel_indices[pCell->get_current_mechanics_voxel_index()].end();
-
-	for( neighbor_voxel_index =
-		pCell->get_container()->underlying_mesh.moore_connected_voxel_indices[pCell->get_current_mechanics_voxel_index()].begin();
-		neighbor_voxel_index != neighbor_voxel_index_end;
-		++neighbor_voxel_index )
-	{
-		if(!is_neighbor_voxel(pCell, pCell->get_container()->underlying_mesh.voxels[pCell->get_current_mechanics_voxel_index()].center, pCell->get_container()->underlying_mesh.voxels[*neighbor_voxel_index].center, *neighbor_voxel_index))
-			continue;
-		end = pCell->get_container()->agent_grid[*neighbor_voxel_index].end();
-		for(neighbor = pCell->get_container()->agent_grid[*neighbor_voxel_index].begin();neighbor != end; ++neighbor)
-		{
-			pCell->custom_add_potentials(*neighbor);
-		}
-	}
-
-	pCell->update_motility_vector(dt);
-	pCell->velocity += phenotype.motility.motility_vector;
-
-	return;
-}
-
-
 // Custom distribution
-std::vector<double> time_to_radius_increase() // vector for the times the migratory domain radius can increase
+std::vector<double> time_to_radius_increase()
 {
 	std::vector<double> time_to_radius(32);
 	time_to_radius[0] = 460;
@@ -540,349 +538,268 @@ std::vector<double> speed_distribution()
 	return speed_vec;
 }
 
-
-
-// custom functions
-bool am_i_dead(Cell* pCell) 																										// done
-{
-	bool dead = pCell->phenotype.death.dead;
-	return dead;
-}
-bool am_i_infected(Cell* pCell) 																								// done
-{
-	static int virus_signal_index = microenvironment.find_density_index("virus");
-
-	int cell_intern_virions = pCell->phenotype.molecular.internalized_total_substrates[virus_signal_index];
-
-	bool infected = false;
-
-	if (cell_intern_virions>=1)
-	{
-		infected = true;
-	}
-	return infected;
-}
-bool am_i_an_detectable_infected_cell(Cell* pCell) 															// done
-{
-	static int virus_signal_index = microenvironment.find_density_index("virus");
-
-	double infection_threshold_half_effect = parameters.doubles("m_half");
-	int cell_intern_virions = pCell->phenotype.molecular.internalized_total_substrates[virus_signal_index];
-
-	bool infected = false;
-
-	if (cell_intern_virions>infection_threshold_half_effect)
-	{
-		infected = true;
-	}
-	return infected;
-}
-Cell* is_there_an_infected_cell_around(Cell* pCell) 															// done
-{
-	// neighborhood
-	std::vector<Cell*> nearby = pCell->cells_in_my_container();
-
-	// loop variables
-	Cell* pC = NULL;
-	bool stop = false;
-	int i=0;
-
-	while (!stop && i<nearby.size())
-	{
-		pC = nearby[i]; // ith cell object
-
-
-		bool dead = pC->phenotype.death.dead;
-		bool itself = (pC == pCell);
-		bool infected_cell = am_i_an_detectable_infected_cell(pC);//am_i_infected(pC);
-
-		// infected cell around
-		if (infected_cell && !dead && !itself)
-		{
-			stop = pC;
-			return pC;
-		}
-		i++;
-	}
-	return NULL;
-}
-// Cell* am_i_attached_to_an_infected_cell(Cell* pCell)
-// {
-// 	// neighborhood
-// 	std::vector<Cell*> nearby = pCell->cells_in_my_container();
-//
-// 	// loop variables
-// 	Cell* pC = NULL;
-// 	int j=0;
-// 	bool already_attached = false;
-//
-// 	while (!already_attached && j<nearby.size())
-// 	{
-// 		pC = nearby[j]; // jth cell object
-//
-// 		for (int i=0 ; i < pCell->state.attached_cells.size() ; i++)
-// 		{
-// 			if (pCell->state.attached_cells[i] == pC)
-// 			{
-// 				already_attached = true;
-// 			}
-// 		}
-// 		j++;
-// 	}
-// 	return pC;
-// }
-bool is_someone_around(Cell* pCell) 																						// done
-{
-	// return pCell->nearby_cells().size()>0;
-	return pCell->cells_in_my_container().size()>0;
-}
-
-// pressure functions
-double equilibrium_spacing()
-{
-	// tumour volume carrying capacity
-	double k_C = parameters.doubles("K_C");
-
-	// tumour surface area
-	double a_frag = parameters.doubles("A_frag");
-
-	// equilibrium spacing between cells
-	double s = sqrt( (2*a_frag) / (sqrt(3)*k_C) );
-	return s;
-}
-double pressure_scale(Cell* pCell)
-{
-	//cell-cell repulsion force coefficient
-	double c_j_ccr = pCell->phenotype.mechanics.cell_cell_repulsion_strength;//10
-
-	// normal pi
-	double pi_ = 3.141592653589793238462;
-
-	// cell radius
-	double radius =  pCell->phenotype.geometry.radius;
-
-	// cell surface area
-	double a_cell = pi_*radius*radius;
-
-	// pressure scale
-	double p_s = c_j_ccr/a_cell;
-	return p_s;
-}
-double maximal_pressure(Cell* pCell)
-{
-	// equilibrium spacing between cells
-	static double s = equilibrium_spacing();
-
-	// cell radius
-	double radius =  pCell->phenotype.geometry.radius;
-
-	// pressure scale
-	double p_s = pressure_scale(pCell);
-
-	// maximal pressure
-	double m_p = 6*p_s*(1-(1/(2*radius))*s)*(1-(1/(2*radius))*s);
-	return m_p;
-}
-
-
-// for cancer cells
-double resample_movement_type() 									                              // done
-{
-	double new_type_rand = UniformRandom();
-	double speed;
-
-	std::vector<double> speed_cumul(12);
-	std::vector<double> speed_vec(12);
-
-	speed_cumul = speed_cumulative();
-	speed_vec = speed_distribution();
-
-	if(new_type_rand<=0.5)
-	{
-		// assign GO type
-		// pCell->custom_data["cell_motility_type"] = 1;
-		double speed_var = UniformRandom();
-
-		for (int k=0; k<12;)
-		{
-			if (speed_var> speed_cumul[k])
-			{
-				k++;
-			}
-			else
-			{
-				// assign migration speed
-				// phenotype.motility.migration_speed = speed_vec[k];
-				speed = speed_vec[k];
-				return speed;
-			}
-		}
-	}
-	else
-	{
-		// assign STOP type
-		// pCell->custom_data["cell_motility_type"] = 2;
-		// phenotype.motility.migration_speed = 0;
-		speed = 0.0;
-		return speed;
-	}
-	return speed;
-}
-double resample_persistence_time() 																							// done
-{
-	double go_stop_var = UniformRandom();
-	double time;
-	std::vector<double> go_times_cumul(8);
-	std::vector<double> persistence_times_vec(12);
-
-	go_times_cumul = go_times_cumulative();
-	persistence_times_vec = persistance_distribution();
-
-
-	// assign persistence time - needs to be a real time!
-	for (int j=0; j<8;)
-	{
-		if (go_stop_var> go_times_cumul[j])
-		{
-			j++;
-		}
-		else
-		{
-			// assign persist time
-			// pCell->custom_data["persistence_time"] = persistence_times_vec[j]+PhysiCell_globals.current_time;
-			time = persistence_times_vec[j]+PhysiCell_globals.current_time;
-			return time;
-			// j = 8;
-		}
-	}
-	return time;
-}
-
-// virus infection dynamics
-double update_virus_uptake_rate(Cell* pCell,  Phenotype& phenotype) 						// done
-{
-	static int virus_signal_index = microenvironment.find_density_index("virus");
-
-	double cell_intern_virions = phenotype.molecular.internalized_total_substrates[virus_signal_index];
-	// double cell_intern_virions = pCell->custom_data["intracellular_virus_amount"];
-	// pCell->custom_data["intracellular_virus_amount"] = cell_intern_virions;
-
-	double rho = pCell->nearest_density_vector()[virus_signal_index];
-	double rho_max = parameters.doubles("rho_max");
-
-	double u = parameters.doubles("u_g");
-	double Vvoxel = microenvironment.mesh.voxels[0].volume;
-	double m_half = parameters.doubles("m_half");
-	double new_uptake_rate;
-
-
-	if (rho < rho_max)
-	{
-		new_uptake_rate = u*rho/(cell_intern_virions/Vvoxel + m_half/Vvoxel);
-	}
-	else
-	{
-		// phenotype.secretion.uptake_rates[virus_signal_index]
-		new_uptake_rate = (u*rho_max*rho_max/rho)*(1/(cell_intern_virions/Vvoxel + m_half/Vvoxel));
-	}
-	return new_uptake_rate;
-}
-void virus_replication(Cell* pCell, Phenotype& phenotype, double dt) 						// done
-{
-	static int virus_signal_index = microenvironment.find_density_index("virus");
-	static int apoptosis_model_index = phenotype.death.find_death_model_index("apoptosis");
-
-	double cell_intern_virions = phenotype.molecular.internalized_total_substrates[virus_signal_index];
-
-	double alpha = parameters.doubles("alpha");
-	double gamma = parameters.doubles("gamma");
-	double delta_V = parameters.doubles("delta_V");
-
-	if (cell_intern_virions > 1 && cell_intern_virions <= alpha)
-	{
-		// pCell->custom_data["intracellular_virus_amount"] = cell_intern_virions+dt*(gamma*cell_intern_virions);
-		phenotype.molecular.internalized_total_substrates[virus_signal_index] = cell_intern_virions+dt*(gamma*cell_intern_virions);
-		phenotype.secretion.secretion_rates[virus_signal_index] = 0;
-	}
-	else if (cell_intern_virions > alpha-1)
-	{
-		// pCell->custom_data["intracellular_virus_amount"] = cell_intern_virions;
-		phenotype.molecular.fraction_released_at_death[virus_signal_index] = 1;
-		phenotype.secretion.uptake_rates[virus_signal_index] = 0;
-
-		// phenotype.secretion.secretion_rates[virus_signal_index] = delta_V;
-		pCell->start_death(apoptosis_model_index);
-	}
-	else if (cell_intern_virions<0)
-	{
-		std::cout<<"Negative intracellular virus!! m_i = "<<cell_intern_virions<<std::endl;
-	}
-	return;
-}
-void virus_induced_lysis(Cell* pCell, Phenotype& phenotype, double dt) 					// done
+// virus related
+void virus_induced_lysis( Cell* pCell, Phenotype& phenotype, double dt )
 {
 	static int virus_signal_index = microenvironment.find_density_index( "virus");
 
-	double cell_intern_virions = phenotype.molecular.internalized_total_substrates[virus_signal_index];
-	// Virus saturation concentration
-	double rho_star = phenotype.secretion.saturation_densities[virus_signal_index];
-  // virus density around
-	double rho = pCell->nearest_density_vector()[virus_signal_index];
-	// volume of voxel
-	double Vvoxel = microenvironment.mesh.voxels[0].volume;
-	// release rate of virus
+	double cell_internal_virions = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+	double pstar = phenotype.secretion.saturation_densities[virus_signal_index];
+	double n = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+	double p = pCell->nearest_density_vector()[virus_signal_index];
+
 	double delta_V = parameters.doubles("delta_V");
+	double Vvoxel = microenvironment.mesh.voxels[0].volume;
 
 
-	if (cell_intern_virions > 1)
+	if( cell_internal_virions> 1)
 	{
-			double amount_to_add = (cell_intern_virions-cell_intern_virions*exp(-delta_V*dt))/Vvoxel;
-			if (amount_to_add > rho_star-rho)
+		double amount_to_add = (n-n*exp(-delta_V*dt))/Vvoxel;
+		if( amount_to_add > pstar-p )
+		{
+			pCell->nearest_density_vector()[virus_signal_index] += (pstar-p)*dt;
+			phenotype.molecular.internalized_total_substrates[virus_signal_index] -= (pstar-p)*Vvoxel*dt;
+		}
+		else
+		{
+			pCell->nearest_density_vector()[virus_signal_index] += (amount_to_add)*dt;
+			phenotype.molecular.internalized_total_substrates[virus_signal_index] = n*exp(-delta_V*dt);
+		}
+	}
+
+	return;
+}
+
+// immune response related
+Cell* immune_cell_check_neighbors_for_attachment( Cell* pAttacker , double dt )
+{
+	std::vector<Cell*> nearby = pAttacker->cells_in_my_container();
+	int i = 0;
+	while( i < nearby.size() )
+	{
+		// don't try to kill yourself
+		if( nearby[i] != pAttacker )
+		{
+			if( immune_cell_attempt_attachment( pAttacker, nearby[i] , dt ) )
+			{ return nearby[i]; }
+		}
+		i++;
+	}
+
+	return NULL;
+}
+bool immune_cell_attempt_attachment( Cell* pAttacker, Cell* pTarget , double dt )
+{
+	static double max_attachment_distance = parameters.doubles("d_attach");
+	static int virus_signal_index = microenvironment.find_density_index( "virus");
+	static int attach_lifetime_i = pAttacker->custom_data.find_variable_index( "attachment_lifetime" );
+
+	double internal_virus = pTarget->phenotype.molecular.internalized_total_substrates[virus_signal_index];
+	double kill_time = parameters.doubles("tau"); // how long the cell needs to attach for  the infected cell to be killed
+	double nstar = parameters.doubles("m_half"); // how long the cell needs to attach for  the infected cell to be killed
+
+	if( internal_virus > nstar && pTarget->phenotype.death.dead == false && pTarget->type!=4)
+	{
+		std::vector<double> displacement = pTarget->position - pAttacker->position;
+		double distance_scale = norm( displacement );
+		if( distance_scale > max_attachment_distance )
+		{ return false; }
+
+		attach_cells( pAttacker, pTarget );
+		pAttacker->custom_data[attach_lifetime_i] = PhysiCell_globals.current_time + kill_time;
+
+		return true;
+	}
+
+	return false;
+}
+bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt )
+{
+	static int apoptosis_model_index = pTarget->phenotype.death.find_death_model_index( "apoptosis" );
+	static int attach_lifetime_i = pAttacker->custom_data.find_variable_index( "attachment_lifetime" );
+
+	// CTL kills cell if it has been attached for enough time
+	if( pAttacker->custom_data[attach_lifetime_i] < PhysiCell_globals.current_time )
+	{
+		return true;
+	}
+	return false;
+}
+bool immune_cell_trigger_apoptosis( Cell* pAttacker, Cell* pTarget )
+{
+	static int apoptosis_model_index = pTarget->phenotype.death.find_death_model_index( "apoptosis" );
+
+	static int virus_index = microenvironment.find_density_index( "virus" );
+
+	// if the Target cell is already dead, don't bother!
+	if( pTarget->phenotype.death.dead == true )
+	{ return false; }
+
+	pTarget->start_death( apoptosis_model_index );
+	pTarget->phenotype.molecular.fraction_released_at_death[virus_index] = 0;//1;
+	return true;
+}
+
+
+void cell_movement( Cell* pCell, Phenotype& phenotype, double dt )
+{
+	//cell movement
+	static int wall_index = microenvironment.find_density_index( "wall" );
+	double wall_amount = pCell->nearest_density_vector()[wall_index];
+
+	static int persistence_time_index = pCell->custom_data.find_variable_index( "persistence_time" );
+	static int cell_motility_type_index = pCell->custom_data.find_variable_index( "cell_motility_type" );
+
+	double persistence_time = pCell->custom_data.variables[persistence_time_index].value;
+	double cell_motility_type = pCell->custom_data.variables[cell_motility_type_index].value; // 1 = go, 2 = stop
+
+	std::vector<double> go_times_cumul(8);
+	std::vector<double> persistence_times_vec(12);
+	std::vector<double> speed_cumul(12);
+	std::vector<double> speed_vec(12);
+	go_times_cumul = go_times_cumulative();
+	persistence_times_vec = persistance_distribution();
+	speed_cumul = speed_cumulative();
+	speed_vec = speed_distribution();
+
+	if( wall_amount<2 & pCell->type == 2 )
+	{
+		phenotype.motility.migration_speed = 0;
+	}
+	else if(pCell->type != 2)
+	{
+		phenotype.motility.migration_speed = parameters.doubles("nu");
+	}
+	else
+	{
+		if( persistence_time <= PhysiCell_globals.current_time ) // if the cell's persistence time is up
+		{
+			// assign new type (stop = 2, or go = 1)
+			double new_type_rand = UniformRandom();
+			if(new_type_rand<=0.5)// GO
 			{
-				pCell->nearest_density_vector()[virus_signal_index] += (rho_star-rho)*dt;
-				phenotype.molecular.internalized_total_substrates[virus_signal_index] -= (rho_star-rho)*Vvoxel*dt;
-				// pCell->custom_data["intracellular_virus_amount"] -= (rho_star-rho)*Vvoxel*dt;
+				pCell->custom_data.variables[cell_motility_type_index].value = 1; // assign go type
+
+				double speed_var = UniformRandom();
+
+				for( int k=0; k<12; )
+				{
+					if( speed_var> speed_cumul[k] )
+					{k++;}
+					else
+					{
+						phenotype.motility.migration_speed = speed_vec[k]; // assign migration speed
+						k = 12;
+					}
+				}
 			}
 			else
+			{pCell->custom_data.variables[cell_motility_type_index].value = 2;
+			phenotype.motility.migration_speed = 0;} // assign STOP type
+
+			// assign persistence time - needs to be a real time!
+			double go_stop_var = UniformRandom();
+			for( int j=0; j<8; )
 			{
-				pCell->nearest_density_vector()[virus_signal_index] += (amount_to_add)*dt;
-				phenotype.molecular.internalized_total_substrates[virus_signal_index] = cell_intern_virions*exp(-delta_V*dt);
-				// pCell->custom_data["intracellular_virus_amount"] = cell_intern_virions*exp(-delta_V*dt);
+				if( go_stop_var> go_times_cumul[j] )
+				{j++;}
+					else
+				{
+					pCell->custom_data.variables[persistence_time_index].value = persistence_times_vec[j]+PhysiCell_globals.current_time; // assign persist time
+					j = 8;
+				}
 			}
-	}
+		}
 
+	}
 	return;
 }
-void checked_for_lysis(Cell* pCell, Phenotype& phenotype, double dt) 						// done
+void infection_dynamics( Cell* pCell, Phenotype& phenotype, double dt )
 {
-	static int virus_signal_index = microenvironment.find_density_index("virus");
 
-	if (phenotype.molecular.fraction_released_at_death[virus_signal_index]>0)
+	//cell infection
+	static int virus_signal_index = microenvironment.find_density_index( "virus");
+	static int apoptosis_model_index =	pCell->phenotype.death.find_death_model_index( "apoptosis" );
+	static double intracellular_virus_index = pCell->custom_data.find_variable_index( "intracellular_virus_amount" );
+
+	double n = phenotype.molecular.internalized_total_substrates[virus_signal_index];//custom_data.variables[intracellular_virus_index].value;
+	double p = pCell->nearest_density_vector()[virus_signal_index];
+	double u = parameters.doubles("u_g");
+	double Vvoxel = microenvironment.mesh.voxels[0].volume;//volume of voxel
+	double nstar = parameters.doubles("m_half");//10;//infection threshol
+	double alp = parameters.doubles("alpha");//1000;//virus burst number
+	double nu = parameters.doubles("gamma");
+	double pmax = parameters.doubles("rho_max");//0.0125;
+
+	if( n>1)
 	{
-		virus_induced_lysis(pCell, phenotype, dt);
 	}
+	pCell->custom_data.variables[intracellular_virus_index].value = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+
+	if( phenotype.death.dead == false )// cell not dead
+	{
+		if(p<pmax)
+		{phenotype.secretion.uptake_rates[virus_signal_index] = u*p/(n/Vvoxel+nstar/Vvoxel);}
+		else
+		{phenotype.secretion.uptake_rates[virus_signal_index] = u*pmax*pmax/(n/Vvoxel+nstar/Vvoxel)/p;}
+
+		if( n > 1 && n <= alp) // update amount inside due to replication
+		{
+			phenotype.molecular.internalized_total_substrates[virus_signal_index] = n+dt*(nu*n);
+			pCell->custom_data.variables[intracellular_virus_index].value = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+
+		}
+		else if( n > alp-1)
+		{
+			pCell->custom_data.variables[intracellular_virus_index].value = pCell->phenotype.molecular.internalized_total_substrates[virus_signal_index];
+			phenotype.molecular.fraction_released_at_death[virus_signal_index] = 1;
+			phenotype.secretion.uptake_rates[virus_signal_index] = 0;
+			pCell->start_death( apoptosis_model_index );
+		}
+		else if( phenotype.molecular.internalized_total_substrates[virus_signal_index]<0 )
+		{std::cout<<"Negative intracellular virus!! m_i = "<<phenotype.molecular.internalized_total_substrates[virus_signal_index]<<std::endl;}
+	}
+	if( phenotype.death.dead == true && phenotype.molecular.fraction_released_at_death[virus_signal_index]>0)
+	{
+		virus_induced_lysis(pCell, phenotype, dt );
+	}
+
 	return;
 }
 
 
-// virus infection dynamics cells behaviour
-void th_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt)
+void th_phenotype( Cell* pCell, Phenotype& phenotype, double dt )
 {
-	static int virus_signal_index = microenvironment.find_density_index("virus");
-	static int chemokine_index = microenvironment.find_density_index("chemokine");
 
-	int cycle_start_index = Ki67_basic.find_phase_index(PhysiCell_constants::Ki67_negative);
-	int cycle_end_index = Ki67_basic.find_phase_index(PhysiCell_constants::Ki67_positive);
+	static int wall_index = microenvironment.find_density_index( "wall" );
+	double wall_amount = pCell->nearest_density_vector()[wall_index];
 
+	std::vector<double> ae_ini(3);
+
+	if( wall_amount<2 )// Make TH cells that have left the diameter of the tumour turn around
+	{
+
+		phenotype.motility.migration_speed = parameters.doubles("nu");
+		ae_ini = -1*pCell->position;
+		phenotype.motility.migration_bias = 1;
+		normalize( &( ae_ini ) );
+		phenotype.motility.migration_bias_direction = ae_ini;
+
+	}
+	else
+	{
+		phenotype.motility.migration_speed = parameters.doubles("nu");
+		phenotype.motility.migration_bias = 0;
+	}
 
 	// TH secretion of cytokines
 	std::vector<Cell*> nearby = pCell->cells_in_my_container();
-	//
-	// static int virus_signal_index = microenvironment.find_density_index( "virus");
-	// static int chemokine_index = microenvironment.find_density_index( "chemokine");
-	//
-	// int cycle_start_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_negative );
-	// int cycle_end_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_positive );
+
+	static int virus_signal_index = microenvironment.find_density_index( "virus");
+	static int chemokine_index = microenvironment.find_density_index( "chemokine");
+
+	int cycle_start_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_negative );
+	int cycle_end_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_positive );
 
 	Cell* pC = NULL;
 	bool stop = false;
@@ -895,631 +812,256 @@ void th_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt)
 		pC = nearby[i];
 		if( pC->phenotype.molecular.internalized_total_substrates[virus_signal_index] > nstar &&
 			pC->phenotype.death.dead == false &&
-			pC != pCell && pC->type != 4)
+			pC != pCell && pC->ID != 4)
 			{ stop = true; }
 
-		i++;
+			i++;
 
-		if( stop == false )
+			if( stop == false )
 			{ pC = NULL; }
-	}
-
-	if( pC )
-	{
-		pCell->phenotype.secretion.secretion_rates[chemokine_index] = parameters.doubles("S_chemokine_CD4");//0.0417;//0.1;
-		pCell->phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD4")*parameters.doubles("TH_prolif_increase_due_to_stimulus");
-		pCell->phenotype.motility.migration_speed = 0.1;
-	}
-	else
-	{
-		pCell->phenotype.secretion.secretion_rates[chemokine_index] = 0;//0.1;
-		pCell->phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD4");
-	}
-	return;
-
-	// // Recurrent values
-	// double S_chemokine_CD4 = parameters.doubles("S_chemokine_CD4");
-	// double r_01_CD4 = parameters.doubles("r_01_CD4");
-	// double th_prolif_increase = parameters.doubles("TH_prolif_increase_due_to_stimulus");
-	//
-	// // Is there an infected cell around
-	// bool infected_neighbor = is_there_an_infected_cell_around(pCell);
-	// bool activated = (phenotype.secretion.secretion_rates[chemokine_index] == S_chemokine_CD4);
-	//
-	// if (infected_neighbor == true || activated)
-	// {
-	// 	// there is an infected cells
-	// 	// need to be activated
-	// 	phenotype.motility.migration_speed = 0.1;
-	// 	phenotype.secretion.secretion_rates[chemokine_index] = S_chemokine_CD4;
-	// 	phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = r_01_CD4*th_prolif_increase;
-	// }
-	// else
-	// {
-	// 	// there is no infected cells and not already activated
-	// 	// keep it desactivated
-	// 	phenotype.secretion.secretion_rates[chemokine_index] = 0;
-	// 	phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = r_01_CD4;
-	// }
-
-	return;
-}
-void cancer_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt)
-{
-	static int virus_signal_index = microenvironment.find_density_index("virus");
-
-	if (!am_i_dead(pCell))
-	{
-		phenotype.secretion.uptake_rates[virus_signal_index] = update_virus_uptake_rate(pCell, phenotype);
-		if (am_i_infected(pCell))
-		{
-			virus_replication(pCell, phenotype, dt);
 		}
-	}
-	// infection_dynamics
-	else
-	{
-		checked_for_lysis(pCell, phenotype, dt);
-	}
-	return;
+
+		if( pC )
+		{
+			phenotype.secretion.secretion_rates[chemokine_index] = parameters.doubles("S_chemokine_CD4");//0.0417;//0.1;
+			phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD4")*parameters.doubles("TH_prolif_increase_due_to_stimulus");
+			phenotype.motility.migration_speed = 0.1;
+		}
+		else
+		{
+			phenotype.secretion.secretion_rates[chemokine_index] = 0;//0.1;
+			phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD4");
+		}
+		return;
 }
-void ctl_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt)
+void cancer_phenotype( Cell* pCell, Phenotype& phenotype, double dt )
 {
-	int cycle_start_index = Ki67_basic.find_phase_index(PhysiCell_constants::Ki67_negative);
-	int cycle_end_index = Ki67_basic.find_phase_index(PhysiCell_constants::Ki67_positive);
 
-	// Recurrent values
-	double r_01_CD8 = parameters.doubles("r_01_CD8");
-	double ctl_prolif_increase = parameters.doubles("CTL_prolif_increase_due_to_stimulus");
+	double R = parameters.doubles("R_GBM");
+	double SA = 4*3.1416*R*R;
+	double s = parameters.doubles("xhi");
+	double pressure = 6*(1-1/(2*R)*s)*(1-1/(2*R)*s);
+	double pressure_scale = 0.027288820670331;
+	double max_pressure = pressure/pressure_scale;
 
-	// looking for someone around
-	if (pCell->state.neighbors.size() > 0)
+	//tumour cell proliferation
+	if(pCell->type ==2)
 	{
-		extra_elastic_attachment_mechanics(pCell);
+		int cycle_start_index = live.find_phase_index( PhysiCell_constants::live );
+		int cycle_end_index = live.find_phase_index( PhysiCell_constants::live );
+
+		pCell->phenotype.cycle.data.transition_rate( cycle_start_index , cycle_end_index ) = parameters.doubles("beta");
+
+		if( pCell->state.simple_pressure*pCell->state.simple_pressure>max_pressure) // if cell under too much pressure -> no proliferation
+		{phenotype.cycle.data.transition_rate( cycle_start_index , cycle_end_index ) = 0;}
+
+	}
+
+	cell_movement( pCell, phenotype, dt);
+	infection_dynamics( pCell, phenotype, dt );
+
+	return;
+
+}
+void ctl_phenotype( Cell* pCell, Phenotype& phenotype, double dt )
+{
+
+	int cycle_start_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_negative );
+	int cycle_end_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_positive );
+
+	if( phenotype.death.dead == true )
+	{
+		pCell->functions.update_phenotype = NULL;
+		return;
+	}
+
+	static int attach_lifetime_i = pCell->custom_data.find_variable_index( "attachment_lifetime" );
+
+	if( pCell->state.neighbors.size() > 0 )
+	{
+		extra_elastic_attachment_mechanics( pCell, phenotype, dt );
 		bool dettach_me = false;
 
 		if( immune_cell_attempt_apoptosis( pCell, pCell->state.neighbors[0], dt ) )
 		{
-			immune_cell_trigger_apoptosis( pCell, pCell->state.neighbors[0]);
+			immune_cell_trigger_apoptosis( pCell, pCell->state.neighbors[0] );
 			dettach_me = true;
 		}
 
 		if( dettach_me )
 		{
+
 			detach_cells( pCell, pCell->state.neighbors[0] );
 			phenotype.motility.is_motile = true;
-
-			ctl_movement(pCell, phenotype);
-			phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = r_01_CD8*ctl_prolif_increase;
+			CTL_movement( pCell, phenotype, dt);
+			phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD8")*parameters.doubles("CTL_prolif_increase_due_to_stimulus");
 		}
 		return;
 	}
 
-	Cell* candidate = immune_cell_check_neighbors_for_attachment(pCell);
-	if (candidate!=NULL)
+	if( immune_cell_check_neighbors_for_attachment( pCell , dt) )
 	{
-		attach_cells( pCell, candidate );
-		double real_time = PhysiCell_globals.current_time;
-		double kill_time = parameters.doubles("tau");
-
-		pCell->custom_data["attachment_lifetime"] = real_time + kill_time;
 		phenotype.motility.is_motile = false;
 		return;
-
-		// attempt to attach
-		// if (immune_cell_attempt_attachment(pCell, candidate))
-		// {
-		// phenotype.motility.is_motile = false;
-		// return;
-		// }
 	}
 
 	phenotype.motility.is_motile = true;
-	ctl_movement(pCell, phenotype);
+	CTL_movement( pCell, phenotype, dt);
+
 	return;
 }
-void stromal_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt)
+void stromal_phenotype( Cell* pCell, Phenotype& phenotype, double dt )
 {
 	static int virus_signal_index = microenvironment.find_density_index("virus");
-	int cell_intern_virions = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+	static double intracellular_virus_index = pCell->custom_data.find_variable_index( "intracellular_virus_amount" );
 
-	if (cell_intern_virions > 1e5)
+	pCell->custom_data.variables[intracellular_virus_index].value = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+
+	if(phenotype.molecular.internalized_total_substrates[virus_signal_index]>1e5)
 	{
 		phenotype.molecular.internalized_total_substrates[virus_signal_index] = 0;
+		pCell->custom_data.variables[intracellular_virus_index].value = 0;
 	}
+	else
+	{
+		pCell->custom_data.variables[intracellular_virus_index].value = phenotype.molecular.internalized_total_substrates[virus_signal_index];
+	}
+
 	return;
 }
 
 
-
-
-// // for ctl cells
-bool immune_cell_trigger_apoptosis(Cell* pAttacker, Cell* pTarget)
+void extra_elastic_attachment_mechanics( Cell* pCell, Phenotype& phenotype, double dt )
 {
-	static int apoptosis_model_index = pTarget->phenotype.death.find_death_model_index("apoptosis");
-	static int virus_index = microenvironment.find_density_index("virus");
+	for( int i=0; i < pCell->state.neighbors.size() ; i++ )
+	{
+		add_elastic_velocity( pCell, pCell->state.neighbors[i], pCell->custom_data["elastic_coefficient"] );
+	}
 
-	// if the Target cell is already dead, don't bother!
-	if (am_i_dead(pTarget))
-	{
-		return false;
-	}
-	else
-	{
-		// std::cout<< "CTL successfully trigger apoptosis"<<std::endl;
-		pTarget->start_death(apoptosis_model_index);
-		pTarget->phenotype.molecular.fraction_released_at_death[virus_index] = 0;
-		return true;
-	}
+	return;
 }
-Cell* immune_cell_check_neighbors_for_attachment(Cell* pAttacker)
-{
-	// neighborhood
-	std::vector<Cell*> nearby = pAttacker->cells_in_my_container();
-
-	// loop variable
-	Cell* pCD;
-	int i=0;
-
-	while (i < nearby.size())
-	{
-		pCD = nearby[i];
-		// don't try to kill yourself
-		if (pCD != pAttacker)
-		{
-			// conditions to be a candidate
-			// be infected
-			bool is_candidate_infected = am_i_an_detectable_infected_cell(pCD);// am_i_infected(pCD);
-			// be alive
-			bool is_candidate_dead = am_i_dead(pCD);
-			// be a cancer cell
-			bool is_candidate_not_stromal = pCD->type != 4;
-			// be close
-			std::vector<double> displacement = pCD->position - pAttacker->position;
-			double distance_scale = norm(displacement);
-			bool is_candidate_close = distance_scale < parameters.doubles("d_attach");
-
-			if (is_candidate_infected && is_candidate_dead && is_candidate_not_stromal && is_candidate_close)
-			{
-				return pCD;
-			}
-		}
-		i++;
-	}
-	return NULL;
-}
-
-bool immune_cell_attempt_attachment( Cell* pAttacker, Cell* pTarget)
-{
-	static int virus_signal_index = microenvironment.find_density_index( "virus");
-	double d_attach = parameters.doubles("d_attach");
-	double kill_time = parameters.doubles("tau"); // how long the cell needs to attach for  the infected cell to be killed
-	double nstar = parameters.doubles("m_half"); // how long the cell needs to attach for  the infected cell to be killed
-	double cell_intern_virions = pTarget->phenotype.molecular.internalized_total_substrates[virus_signal_index];
-
-
-
-	std::vector<double> displacement = pTarget->position - pAttacker->position;
-	double distance_scale = norm( displacement );
-
-	bool is_candidate_saturated = cell_intern_virions >= nstar;
-	bool is_candidate_not_dead = am_i_dead(pTarget) == false;
-	bool is_candidate_not_stromal = !(pTarget->type == 4);
-	bool is_candidate_close = distance_scale < d_attach;
-
-	if( is_candidate_saturated && is_candidate_not_dead && is_candidate_not_stromal && is_candidate_close)
-	{
-		attach_cells( pAttacker, pTarget );
-		double real_time = PhysiCell_globals.current_time;
-		pAttacker->custom_data["attachment_lifetime"] = real_time + kill_time;
-		return true;
-	}
-
-	return false;
-}
-bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt )
-{
-	double attached_time = 	pAttacker->custom_data["attachment_lifetime"];
-	double real_time = PhysiCell_globals.current_time;
-
-	// CTL kills cell if it has been attached for enough time
-	if( attached_time < real_time && pTarget->type==2)
-	{
-		return true;
-	}
-	return false;
-}
-void add_elastic_velocity(Cell* pActingOn, Cell* pAttachedTo , double elastic_constant) // done
+void add_elastic_velocity( Cell* pActingOn, Cell* pAttachedTo , double elastic_constant )
 {
 	std::vector<double> displacement = pAttachedTo->position - pActingOn->position;
-	axpy( &(pActingOn->velocity), elastic_constant , displacement );
+	axpy( &(pActingOn->velocity) , elastic_constant , displacement );
 
 	return;
 }
-void extra_elastic_attachment_mechanics(Cell* pCell) 														// done
+
+
+void CTL_movement( Cell* pCell, Phenotype& phenotype, double dt )
 {
-	for (int i=0; i < pCell->state.neighbors.size() ; i++)
-	{
-		add_elastic_velocity(pCell, pCell->state.neighbors[i], parameters.doubles("c_s"));
-	}
-	return;
-}
-
-
-
-
-void ctl_virus(Cell* pCell, Phenotype& phenotype)
-{
-
-	int cycle_start_index = Ki67_basic.find_phase_index(PhysiCell_constants::Ki67_negative);
-	int cycle_end_index = Ki67_basic.find_phase_index(PhysiCell_constants::Ki67_positive);
-
-	// Recurrent values
-	double r_01_CD8 = parameters.doubles("r_01_CD8");
-	double ctl_prolif_increase = parameters.doubles("CTL_prolif_increase_due_to_stimulus");
-
-
-	// Am I attached to an infected cells
-	if (pCell->custom_data["am_i_attached"]==1)
-	{
-		// Have I been attahced for longer then tau min
-		double tau = parameters.doubles("tau");
-		if (pCell->custom_data["attachment_lifetime"]>tau)
-		{
-			// CD8+T cell kills cell and increases proliferation
-			// Cell* pTarget = pCell->state.attached_cells.back();
-			Cell* pTarget=pCell->state.neighbors[0];
-			immune_cell_trigger_apoptosis(pCell, pTarget);
-
-			detach_cells( pCell, pTarget );
-			pCell->custom_data["am_i_attached"] = 0;
-			phenotype.motility.is_motile = true;
-
-			ctl_movement(pCell, phenotype);
-			phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = r_01_CD8*ctl_prolif_increase;
-		}
-		else
-		{
-			return;
-		}
-	}
-	// Is there an infected cell in my neighbourhood
-	else
-	{
-		Cell* candidate = is_there_an_infected_cell_around(pCell);
-		if (candidate!=NULL)
-		{
-			// Attempt attachment
-			bool success = immune_cell_attempt_attachment(pCell, candidate);
-			if (success)
-			{
-				pCell->custom_data["am_i_attached"] = 1;
-				phenotype.motility.is_motile = false;
-				return;
-			}
-			else
-			{
-				pCell->custom_data["am_i_attached"] = 0;
-				phenotype.motility.is_motile = true;
-				ctl_movement(pCell, phenotype);
-				return;
-			}
-
-
-		}
-		else
-		{
-			pCell->custom_data["am_i_attached"] = 0;
-			phenotype.motility.is_motile = true;
-			ctl_movement(pCell, phenotype);
-			return;
-		}
-	}
-	phenotype.motility.is_motile = true;
-	ctl_movement(pCell, phenotype);
-	return;
-}
-
-// Custom cell movement
-void th_movement(Cell* pCell, Phenotype& phenotype)
-{
-	static int wall_index = microenvironment.find_density_index("wall");
-
+	static int wall_index = microenvironment.find_density_index( "wall" );
 	double wall_amount = pCell->nearest_density_vector()[wall_index];
-	double nu = parameters.doubles("nu");
+
+	static int chemokine_index = microenvironment.find_density_index( "chemokine" );
+	double chemokine_amount = pCell->nearest_density_vector()[chemokine_index];
+
+	int cycle_start_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_negative );
+	int cycle_end_index = Ki67_basic.find_phase_index( PhysiCell_constants::Ki67_positive );
+
+
 	std::vector<double> ae_ini(3);
 
-	if( wall_amount<2 )// Make TH cells that have left the diameter of the tumour turn around
+	// TH movement
+	if( wall_amount<2 )
 	{
-		phenotype.motility.migration_speed = nu;
+		std::cout<<"outside domain "<<pCell->phenotype.motility.migration_speed<<std::endl;
+		phenotype.motility.migration_bias = 1;
+		phenotype.motility.migration_bias_direction = pCell->nearest_gradient(wall_index);
 		ae_ini = -1*pCell->position;
+
 		phenotype.motility.migration_bias = 1;
 		normalize( &( ae_ini ) );
 		phenotype.motility.migration_bias_direction = ae_ini;
+
+		return;
 	}
-	else
+	else if(chemokine_amount>1e-8)// sample chemotaxis gradient and random walk in that direction
 	{
-		phenotype.motility.migration_speed = nu;
-		phenotype.motility.migration_bias = 0;
-	}
-	return;
-}
-void cancer_movement(Cell* pCell, Phenotype& phenotype) 												// done
-{
-	//cell movement
-	static int wall_index = microenvironment.find_density_index("wall");
-	double wall_amount = pCell->nearest_density_vector()[wall_index];
-	double persistence_time = phenotype.motility.persistence_time;
+		phenotype.motility.migration_speed = parameters.doubles("nu")+(parameters.doubles("nu_max")-parameters.doubles("nu"))*(chemokine_amount/(parameters.doubles("nu_star")+chemokine_amount));
+		phenotype.motility.migration_bias = parameters.doubles("b_CD8");//0.85;
+		phenotype.motility.migration_bias_direction = pCell->nearest_gradient(chemokine_index);
+		phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD8");
 
-	if( persistence_time <= PhysiCell_globals.current_time ) // if the cell's persistence time is up
-	{
-		phenotype.motility.migration_speed = resample_movement_type(); // assign migration speed
-		// std::cout<<phenotype.motility.migration_speed<<std::endl;
-		if (phenotype.motility.migration_speed > 0.0)
-		{
-			phenotype.motility.is_motile = true;
-		}
-		else
-		{
-			phenotype.motility.is_motile = false;
-		}
-		phenotype.motility.persistence_time = resample_persistence_time();// assign persistence time - needs to be a real time!
-	}
-	// to be sure that the cell don't go outside
-	if(wall_amount<2)
-	{
-		phenotype.motility.migration_speed = 0.0;
-		phenotype.motility.is_motile = false;
-	}
-	return;
-}
-void ctl_movement(Cell* pCell, Phenotype& phenotype)
-{
-	static int chemokine_index = microenvironment.find_density_index("chemokine");
-	static int wall_index = microenvironment.find_density_index("wall");
-
-	double b;
-	double psi;
-
-	double nu = parameters.doubles("nu");
-	double nu_max = parameters.doubles("nu_max");
-	double nu_star = parameters.doubles("nu_star");
-	double b_CD8 = parameters.doubles("b_CD8");
-
-	double chemokine_amount = pCell->nearest_density_vector()[chemokine_index];
-	std::vector<double> chemokine_gradient = pCell->nearest_gradient(chemokine_index);
-
-	double wall_amount = pCell->nearest_density_vector()[wall_index];
-	std::vector<double> dbias(3);
-
-
-	// verify if cell go outside of the tumour_radius
-
-	// Extra condition (chemokine) for ctl only
-
-	if(chemokine_amount>1e-8)// sample chemotaxis gradient and random walk in that direction
-	{
-	  dbias = chemokine_gradient;
-	  b = b_CD8;
-	  psi = nu+(nu_max-nu)*(chemokine_amount/(nu_star/2+chemokine_amount));
-		phenotype.motility.migration_bias_direction = dbias;
+		return;
 	}
 	else if(chemokine_amount>1e-3)
 	{
-	  dbias = chemokine_gradient;
-	  b = b_CD8;
-	  psi = nu+(nu_max-nu)*(chemokine_amount/(nu_star/2+chemokine_amount));
-		phenotype.motility.migration_bias_direction = dbias;
+		phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD8")*parameters.doubles("CTL_prolif_increase_due_to_stimulus");//7.9026*1e-5*1e1;
+		phenotype.motility.migration_speed = parameters.doubles("nu")+(parameters.doubles("nu_max")-parameters.doubles("nu"))*(chemokine_amount/(parameters.doubles("nu_star")+chemokine_amount));
+		phenotype.motility.migration_bias = parameters.doubles("b_CD8");
+		phenotype.motility.migration_bias_direction = pCell->nearest_gradient(chemokine_index);
+
+		return;
 	}
 	else
 	{
-	  b = 0.0;
-	  psi = nu;
-	}
+		phenotype.motility.migration_bias = 0;
+		phenotype.motility.migration_speed = parameters.doubles("nu");
+		phenotype.cycle.data.transition_rate(cycle_start_index,cycle_end_index) = parameters.doubles("r_01_CD8");
 
-	if (wall_amount<2)
-	{
-		// Make TH/CTL cells that have left the diameter of the tumour turn around
-		dbias = -1*pCell->position;
-		normalize( &( dbias ) );
-
-		// dbias = ae_ini;
-		b = b_CD8;
-		psi = nu;
-		phenotype.motility.migration_bias_direction = dbias;
-	}
-	//
-	phenotype.motility.migration_bias = b;
-	phenotype.motility.migration_speed = psi;
-	return;
-}
-void stromal_movement(Cell* pCell, Phenotype& phenotype) 												// done
-{
-	//stromal doesn't move
-	return;
-}
-
-// Custom phenotype update fonctions
-void th_phenotype(Cell* pCell, Phenotype& phenotype, double dt) 								// done
-{
-	if (am_i_dead(pCell))
-	{
-		pCell->functions.update_phenotype = NULL;
 		return;
 	}
-
-	th_movement(pCell, phenotype);
-	th_virus_infection_dynamics(pCell, phenotype, dt);
-	return;
 }
-void cancer_phenotype(Cell* pCell, Phenotype& phenotype, double dt)
+
+
+
+// default
+void phenotype_function( Cell* pCell, Phenotype& phenotype, double dt )
+{ return; }
+void custom_function( Cell* pCell, Phenotype& phenotype , double dt )
+{ return; }
+void contact_function( Cell* pMe, Phenotype& phenoMe , Cell* pOther, Phenotype& phenoOther , double dt )
+{ return; }
+
+// custom version
+void custom_update_cell_velocity( Cell* pCell, Phenotype& phenotype, double dt)
 {
-	static int wall_index = microenvironment.find_density_index("wall");
-
-	int cycle_start_index = live.find_phase_index(PhysiCell_constants::live);
-	int cycle_end_index = live.find_phase_index(PhysiCell_constants::live);
-
-	// maximal pressure
-	double m_p = maximal_pressure(pCell);
-	// gbm proliferation rate
-	double beta = parameters.doubles("beta");
-	// cell pressure
-	double cell_pressure = pCell->state.simple_pressure;
-	if (!am_i_infected(pCell))
+	if( pCell->functions.add_cell_basement_membrane_interactions )
 	{
-		// cell attemps proliferation
-		if (cell_pressure*cell_pressure > m_p)
+		pCell->functions.add_cell_basement_membrane_interactions(pCell, phenotype,dt);
+	}
+
+	pCell->state.simple_pressure = 0.0;
+	pCell->state.neighbors.clear(); // new 1.8.0
+
+	//First check the neighbors in my current voxel
+	std::vector<Cell*>::iterator neighbor;
+	std::vector<Cell*>::iterator end = pCell->get_container()->agent_grid[pCell->get_current_mechanics_voxel_index()].end();
+	for(neighbor = pCell->get_container()->agent_grid[pCell->get_current_mechanics_voxel_index()].begin(); neighbor != end; ++neighbor)
+	{
+		pCell->custom_add_potentials(*neighbor);
+	}
+	std::vector<int>::iterator neighbor_voxel_index;
+	std::vector<int>::iterator neighbor_voxel_index_end =
+		pCell->get_container()->underlying_mesh.moore_connected_voxel_indices[pCell->get_current_mechanics_voxel_index()].end();
+
+	for( neighbor_voxel_index =
+		pCell->get_container()->underlying_mesh.moore_connected_voxel_indices[pCell->get_current_mechanics_voxel_index()].begin();
+		neighbor_voxel_index != neighbor_voxel_index_end;
+		++neighbor_voxel_index )
+	{
+		if(!is_neighbor_voxel(pCell, pCell->get_container()->underlying_mesh.voxels[pCell->get_current_mechanics_voxel_index()].center, pCell->get_container()->underlying_mesh.voxels[*neighbor_voxel_index].center, *neighbor_voxel_index))
+			continue;
+		end = pCell->get_container()->agent_grid[*neighbor_voxel_index].end();
+		for(neighbor = pCell->get_container()->agent_grid[*neighbor_voxel_index].begin();neighbor != end; ++neighbor)
 		{
-			phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = 0.0;
-		}
-		else
-		{
-			phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = beta;
+			pCell->custom_add_potentials(*neighbor);
 		}
 	}
-	else
-	{
-		phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = 0.0;
-	}
-	cancer_movement(pCell, phenotype);
-	cancer_virus_infection_dynamics(pCell, phenotype, dt);
-	return;
-}
-void ctl_phenotype(Cell* pCell, Phenotype& phenotype, double dt)
-{
-	if (am_i_dead(pCell))
-	{
-		pCell->functions.update_phenotype = NULL;
-		return;
-	}
 
-	ctl_movement(pCell, phenotype);
-	// ctl_virus_infection_dynamics(pCell, phenotype, dt);
-	ctl_virus(pCell, phenotype);
-}
-void stromal_phenotype(Cell* pCell, Phenotype& phenotype, double dt) 						// done
-{
-	if (am_i_dead(pCell))
-	{
-		pCell->functions.update_phenotype = NULL;
-		return;
-	}
+	pCell->update_motility_vector(dt);
+	pCell->velocity += phenotype.motility.motility_vector;
 
-	stromal_movement(pCell, phenotype);
-	stromal_virus_infection_dynamics(pCell, phenotype, dt);
 	return;
 }
 
-
+// simulation related functions
 void testing()
 {
-	// setup initial concentration of "wall", virus
-
-	// for testing only
-	static int virus_index = microenvironment.find_density_index("virus");
-	static int wall_index = microenvironment.find_density_index("wall");
-	static int chemokine_index = microenvironment.find_density_index("chemokine");
-
-	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-
-		if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")+10)*(parameters.doubles("R")+10))
-		{
-			microenvironment(n)[virus_index] = 0;
-			microenvironment(n)[wall_index] = 1;
-			microenvironment(n)[chemokine_index] = 0;
-		}
-		else if(ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")-10)*(parameters.doubles("R")-10))
-		{
-			microenvironment(n)[virus_index] = 0;//parameters.doubles("initial_virus_density");
-			microenvironment(n)[wall_index] = 3.5;
-			microenvironment(n)[chemokine_index] = 0;
-		}
-		else if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>250*250 )
-		{
-			microenvironment(n)[virus_index] = 0;
-			microenvironment(n)[wall_index] = 5;
-			microenvironment(n)[chemokine_index] = 0;
-
-		}
-		else
-		{
-			microenvironment(n)[virus_index] = 0;
-			microenvironment(n)[wall_index] = 10;
-			microenvironment(n)[chemokine_index] = 0;
-		}
-	}
-
-	// location of virus
-	double x_virus = 58;
-	double y_virus = 17;
-	double zone_radius = 20;
-	// double tumour_radius = parameters.doubles("R");
-
-
-	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-
-		if((x_virus-ECMdense[0])*(x_virus-ECMdense[0])+(y_virus-ECMdense[1])*(y_virus-ECMdense[1])<zone_radius*zone_radius)
-		{
-			microenvironment(n)[virus_index] = 7.12;
-		}
-	}
-
-
-	// location of virus
-	x_virus = -58;
-	y_virus = -17;
-	zone_radius = 20;
-	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-
-		if((x_virus-ECMdense[0])*(x_virus-ECMdense[0])+(y_virus-ECMdense[1])*(y_virus-ECMdense[1])<zone_radius*zone_radius)
-		{
-			microenvironment(n)[virus_index] = 7.12;
-		}
-	}
-
-	// location of virus
-	x_virus = -100;
-	y_virus = -100;
-	zone_radius = 50;
-	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-
-		if((x_virus-ECMdense[0])*(x_virus-ECMdense[0])+(y_virus-ECMdense[1])*(y_virus-ECMdense[1])<zone_radius*zone_radius)
-		{
-			microenvironment(n)[virus_index] = 7.12;
-		}
-	}
-
-
-	// location of virus
-	x_virus = -200;
-	y_virus = 100;
-	zone_radius = 50;
-	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-
-		if((x_virus-ECMdense[0])*(x_virus-ECMdense[0])+(y_virus-ECMdense[1])*(y_virus-ECMdense[1])<zone_radius*zone_radius)
-		{
-			microenvironment(n)[virus_index] = 7.12;
-		}
-	}
-
-	return;
-}
-
-// old setup
-void old_testing()
-{
-	static int virus_index = microenvironment.find_density_index("virus");
-	static int wall_index = microenvironment.find_density_index("wall");
+	static int virus_index = microenvironment.find_density_index( "virus");
+	static int wall_index = microenvironment.find_density_index( "wall");
 	static int chemokine_index = microenvironment.find_density_index( "chemokine");
 
 	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
@@ -1592,14 +1134,13 @@ void old_testing()
 	}
 	return;
 }
-void old_immune_cell_placement()
+void immune_cell_placement(void)
 {
 	double x = 0.0;
 	double y = 0.0;
 
 	Cell* pCell = NULL;
 	Cell_Definition* pCD;
-
 
 	pCD = find_cell_definition("th");
 
@@ -1977,9 +1518,10 @@ void old_immune_cell_placement()
 
 	return;
 }
-void old_setup_tissue_circle_immune()
+void setup_tissue_circle_immune( void )
 {
-	static int virus_signal_index = microenvironment.find_density_index("virus");
+	double Radius = parameters.doubles("R");
+
 	std::vector<double> go_times_cumul(8);
 	std::vector<double> persistence_times_vec(12);
 	std::vector<double> speed_cumul(12);
@@ -1989,7 +1531,7 @@ void old_setup_tissue_circle_immune()
 	speed_cumul = speed_cumulative();
 	speed_vec = speed_distribution();
 
-	old_immune_cell_placement();
+	immune_cell_placement();
 
 	Cell* pCell = NULL;
 
@@ -2070,9 +1612,45 @@ void old_setup_tissue_circle_immune()
 		static int virus_signal_index = microenvironment.find_density_index("virus");
 		pCell->phenotype.secretion.uptake_rates[virus_signal_index] = parameters.doubles("u_g");//distribution2(generator);//distribution2(generator);
 
-		pCell->phenotype.motility.migration_speed = resample_movement_type(); // assign migration speed
-		pCell->phenotype.motility.persistence_time = resample_persistence_time();// assign persistence time - needs to be a real time!
+		int persistence_time_index = pCell->custom_data.find_variable_index( "persistence_time" );
+		int cell_motility_type_index = pCell->custom_data.find_variable_index( "cell_motility_type" );
+
+		double p = UniformRandom();
+		if(p<=0.5)// GO
+		{
+			pCell->custom_data.variables[cell_motility_type_index].value = 1;
+			double speed_var = UniformRandom();
+
+			for( int k=0; k<12; )
+			{
+				if( speed_var> speed_cumul[k] )
+				{k++;}
+				else
+				{
+					pCell->phenotype.motility.migration_speed = speed_vec[k];
+					k = 12;
+				}
+			}
+		}
+		else
+		{pCell->custom_data.variables[cell_motility_type_index].value = 2;} // STOP
+
+		double go_stop_var = UniformRandom();
+
+		for( int j=0; j<8; )
+		{
+			if( go_stop_var> go_times_cumul[j] )
+			{j++;}
+			else
+			{
+				pCell->custom_data.variables[persistence_time_index].value = persistence_times_vec[j];
+				j = 8;
+			}
+
+		}
 	}
+
+
 
 	// Stromal cells
 	pCD = find_cell_definition("stromal");
@@ -2132,9 +1710,44 @@ void old_setup_tissue_circle_immune()
 		static int virus_signal_index = microenvironment.find_density_index("virus");
 		pCell->phenotype.secretion.uptake_rates[virus_signal_index] = parameters.doubles("u_g");//distribution2(generator);//distribution2(generator);
 
-		pCell->phenotype.motility.migration_speed = resample_movement_type(); // assign migration speed
-		pCell->phenotype.motility.persistence_time = resample_persistence_time();// assign persistence time - needs to be a real time!
+		int persistence_time_index = pCell->custom_data.find_variable_index( "persistence_time" );
+		int cell_motility_type_index = pCell->custom_data.find_variable_index( "cell_motility_type" );
+
+		double p = UniformRandom();
+		if(p<=0.5)// GO
+		{
+			pCell->custom_data.variables[cell_motility_type_index].value = 1;
+			double speed_var = UniformRandom();
+
+			for( int k=0; k<12; )
+			{
+				if( speed_var> speed_cumul[k] )
+				{k++;}
+				else
+				{
+					pCell->phenotype.motility.migration_speed = speed_vec[k];
+					k = 12;
+				}
+			}
+		}
+		else
+		{pCell->custom_data.variables[cell_motility_type_index].value = 2;} // STOP
+
+		double go_stop_var = UniformRandom();
+
+		for( int j=0; j<8; )
+		{
+			if( go_stop_var> go_times_cumul[j] )
+			{j++;}
+			else
+			{
+				pCell->custom_data.variables[persistence_time_index].value = persistence_times_vec[j];
+				j = 8;
+			}
+
+		}
 	}
+
 	// Stromal cells
 	pCD = find_cell_definition("stromal");
 
@@ -2163,31 +1776,6 @@ void old_setup_tissue_circle_immune()
 		pCell->phenotype.secretion.uptake_rates[virus_signal_index] = parameters.doubles("u_s");//distribution2(generator);//distribution2(generator);
 
 	}
+
 	return;
 }
-
-
-
-
-// current problem
-// keep custom_data internal_virus updated
-
-
-// on progress
-
-
-// done
-// ctl phenotype not ready
-// ctl or th cell don't move
-// wall condition for cancer_cell
-// virus infection kill cancer too fast
-// cancer cell go outside wall
-
-
-// wall condition for cells (adrianne paper for formula; for csv data use 500)
-// verify is_attached do right if all the boolean are doing correct pCell->state.neighbors.size() > 0
-
-// page 51--53
-// compute density when using csv
-// 48-49-50 for pressure
-// check for movement

@@ -114,7 +114,41 @@ int main( int argc, char* argv[] )
 	/* Microenvironment setup */
 
 	setup_microenvironment(); // modify this in the custom code
-
+	double last_time_updated = 0; // keep tabs of the last time the radius was increased
+	double number_of_times_updated = 1; // the number of times the radius has been increased
+	std::vector< double > time_to_radius_increase(32); // vector for the times the migratory domain radius can increase
+	time_to_radius_increase[0] = 460;
+	time_to_radius_increase[1] = 457;
+	time_to_radius_increase[2] = 455;
+	time_to_radius_increase[3] = 452;
+	time_to_radius_increase[4] = 450;
+	time_to_radius_increase[5] = 448;
+	time_to_radius_increase[6] = 445;
+	time_to_radius_increase[7] = 443;
+	time_to_radius_increase[8] = 441;
+	time_to_radius_increase[9] = 439;
+	time_to_radius_increase[10] = 436;
+	time_to_radius_increase[11] = 434;
+	time_to_radius_increase[12] = 432;
+	time_to_radius_increase[13] = 430;
+	time_to_radius_increase[14] = 428;
+	time_to_radius_increase[15] = 426;
+	time_to_radius_increase[16] = 424;
+	time_to_radius_increase[17] = 422;
+	time_to_radius_increase[18] = 420;
+	time_to_radius_increase[19] = 418;
+	time_to_radius_increase[20] = 416;
+	time_to_radius_increase[21] = 414;
+	time_to_radius_increase[22] = 412;
+	time_to_radius_increase[23] = 410;
+	time_to_radius_increase[24] = 409;
+	time_to_radius_increase[25] = 407;
+	time_to_radius_increase[26] = 405;
+	time_to_radius_increase[27] = 403;
+	time_to_radius_increase[28] = 401;
+	time_to_radius_increase[29] = 400;
+	time_to_radius_increase[30] = 398;
+	time_to_radius_increase[31] = 10000000;
 
 	/* PhysiCell setup */
 
@@ -125,8 +159,9 @@ int main( int argc, char* argv[] )
 	/* Users typically start modifying here. START USERMODS */
 
 	create_cell_types();
+	setup_tissue_circle_immune();
+
 	// setup_tissue();
-	old_setup_tissue_circle_immune();
 
 	/* Users typically stop modifying here. END USERMODS */
 
@@ -177,12 +212,6 @@ int main( int argc, char* argv[] )
 
 	// main loop
 
-	double last_time_updated = 0; // keep tabs of the last time the radius was increased
-	double number_of_times_updated = 1; // the number of times the radius has been increased
-
-	std::vector<double> time_to_radius(32);
-	time_to_radius = time_to_radius_increase();
-
 	try
 	{
 		while( PhysiCell_globals.current_time < PhysiCell_settings.max_time + 0.1*diffusion_dt )
@@ -222,12 +251,12 @@ int main( int argc, char* argv[] )
 
 			// update the microenvironment
 			microenvironment.simulate_diffusion_decay( diffusion_dt );
-			// static int virus_index = microenvironment.find_density_index( "virus");
+			static int virus_index = microenvironment.find_density_index( "virus");
 			static int wall_index = microenvironment.find_density_index( "wall");
 		  static double tumour_radius_initial = parameters.doubles("R");
 
 			// update migratory domain radius
-			if( PhysiCell_globals.current_time > last_time_updated + time_to_radius[number_of_times_updated] )
+			if( PhysiCell_globals.current_time > last_time_updated + time_to_radius_increase[number_of_times_updated] )
 			{
 				for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
 				{

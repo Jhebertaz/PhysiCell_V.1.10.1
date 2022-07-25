@@ -189,6 +189,24 @@ gbm-ov-immune-stroma-patchy-sample:
 	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
 	cp ./sample_projects/gbm_ov_immune_stroma_patchy/config/* ./config/
 
+gbm-ov-immune-stroma-patchy-sample-old:
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old/custom_modules/* ./custom_modules/
+	touch main.cpp && cp main.cpp main-backup.cpp
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old/main.cpp ./main.cpp
+	cp Makefile Makefile-backup
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old/Makefile .
+	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old/config/* ./config/
+
+gbm-ov-immune-stroma-patchy-sample-old-new:
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/custom_modules/* ./custom_modules/
+	touch main.cpp && cp main.cpp main-backup.cpp
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/main.cpp ./main.cpp
+	cp Makefile Makefile-backup
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/Makefile .
+	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
+	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/config/* ./config/
+
 
 # ---- intracellular projects
 ode-energy-sample:
