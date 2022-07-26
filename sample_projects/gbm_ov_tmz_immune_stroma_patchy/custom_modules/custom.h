@@ -74,12 +74,6 @@ using namespace PhysiCell;
 
 // setup functions to help us along
 
-
-
-
-
-
-
 void create_cell_types( void );
 void setup_tissue( void );
 
@@ -87,12 +81,14 @@ void setup_tissue( void );
 void setup_microenvironment( void );
 
 // custom pathology coloring function
-
 std::vector<std::string> my_coloring_function(Cell*);
+std::vector<std::string> colouring_by_intracellular_virus_amount(Cell* pCell);
 
-std::vector<std::string> colouring_by_intracellular_virus_amount( Cell* pCell );
+// custom from Source
+void custom_update_cell_velocity(Cell* pCell, Phenotype& phenotype, double dt);
 
 // custom distribution
+std::vector<double> time_to_radius_increase(void);
 std::vector<double> speed_distribution(void);
 std::vector<double> go_times_cumulative(void);
 std::vector<double> persistance_distribution(void);
@@ -100,43 +96,72 @@ std::vector<double> speed_cumulative(void);
 
 
 void testing();
+
+// old
+void old_testing();
+void old_immune_cell_placement();
+void old_setup_tissue_circle_immune();
+bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt );// old one
+
+
 // custom functions can go here
 bool am_i_dead(Cell* pCell);
 bool am_i_infected(Cell* pCell);
-bool is_there_an_infected_cell_around(Cell* pCell);
-bool am_i_attached(Cell* pCell);
+bool am_i_an_detectable_infected_cell(Cell* pCell);
+Cell* is_there_an_infected_cell_around(Cell* pCell);
+Cell* am_i_attached_to_an_infected_cell(Cell* pCell);
+bool is_someone_around(Cell* pCell);
 
-void resample_movement_type(Cell* pCell);
-void resample_persistence_time(Cell* pCell);
+double resample_movement_type();
+double resample_persistence_time();
 
+// ctl extra functions
 bool immune_cell_trigger_apoptosis(Cell* pAttacker, Cell* pTarget);
 Cell* immune_cell_check_neighbors_for_attachment(Cell* pAttacker);
-void CTL_movement(Cell* pCell, Phenotype& phenotype);
+bool immune_cell_attempt_attachment( Cell* pAttacker, Cell* pTarget);
+void ctl_virus(Cell* pCell, Phenotype& phenotype);
 void add_elastic_velocity(Cell* pActingOn, Cell* pAttachedTo, double elastic_constant);
 void extra_elastic_attachment_mechanics(Cell* pCell);
 
+// pressure functions
+double equilibrium_spacing();
+double pressure_scale(Cell* pCell);
+double maximal_pressure(Cell* pCell);
 
-void update_virus_uptake_rate(Cell* pCell, Phenotype& phenotype);
+// tmz effect
+void cancer_tmz_effect(Cell* pCell, Phenotype& phenotype);
+// for main
+double CSF_vals(int indexing_CSF_Vec);
+double CSF_conc_to_density(double time);
+
+
+
+// virus infection dynamics
+double update_virus_uptake_rate(Cell* pCell, Phenotype& phenotype);
 void virus_replication(Cell* pCell, Phenotype& phenotype, double dt);
 void virus_induced_lysis(Cell* pCell, Phenotype& phenotype, double dt);
 void checked_for_lysis(Cell* pCell, Phenotype& phenotype, double dt);
 
 
-// custom from Source
-void custom_update_cell_velocity(Cell* pCell, Phenotype& phenotype, double dt);
+// custom movement functions
+void th_movement(Cell* pCell, Phenotype& phenotype);
+void cancer_movement(Cell* pCell, Phenotype& phenotype);
+void ctl_movement(Cell* pCell, Phenotype& phenotype);
+void stromal_movement(Cell* pCell, Phenotype& phenotype);
 
+// custom infection dynamics functions
+void th_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt);
+void cancer_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt);
+void ctl_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype);
+void stromal_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt);
 
-// custom phenotype update functions
-// cell pointer, his phenotype reference and time step
+// custom phenotype functions
 void th_phenotype(Cell* pCell, Phenotype& phenotype, double dt);
 void cancer_phenotype(Cell* pCell, Phenotype& phenotype, double dt);
 void ctl_phenotype(Cell* pCell, Phenotype& phenotype, double dt);
 void stromal_phenotype(Cell* pCell, Phenotype& phenotype, double dt);
 
-
-
-
-
+// default phenotype functions
 void phenotype_function(Cell* pCell, Phenotype& phenotype, double dt);
 void custom_function(Cell* pCell, Phenotype& phenotype , double dt);
 void contact_function(Cell* pMe, Phenotype& phenoMe , Cell* pOther, Phenotype& phenoOther , double dt);

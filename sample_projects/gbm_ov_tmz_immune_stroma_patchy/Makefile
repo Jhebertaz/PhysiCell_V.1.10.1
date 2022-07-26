@@ -1,5 +1,5 @@
 VERSION := $(shell grep . VERSION.txt | cut -f1 -d:)
-PROGRAM_NAME := gbm_ov_immune_stroma_patchy_old_new
+PROGRAM_NAME := gbm_ov_tmz_immune_stroma_patchy
 
 CC := g++
 # CC := g++-mp-7 # typical macports compiler name

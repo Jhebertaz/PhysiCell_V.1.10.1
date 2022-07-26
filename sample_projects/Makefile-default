@@ -171,14 +171,14 @@ interaction-sample:
 	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
 	cp ./sample_projects/interactions/config/* ./config/
 
-gbm-tmz-ov-immune-stroma-patchy-sample:
-	cp ./sample_projects/gbm_tmz_ov_immune_stroma_patchy/custom_modules/* ./custom_modules/
+gbm-ov-tmz-immune-stroma-patchy-sample:
+	cp ./sample_projects/gbm_ov_tmz_immune_stroma_patchy/custom_modules/* ./custom_modules/
 	touch main.cpp && cp main.cpp main-backup.cpp
-	cp ./sample_projects/gbm_tmz_ov_immune_stroma_patchy/main.cpp ./main.cpp
+	cp ./sample_projects/gbm_ov_tmz_immune_stroma_patchy/main.cpp ./main.cpp
 	cp Makefile Makefile-backup
-	cp ./sample_projects/gbm_tmz_ov_immune_stroma_patchy/Makefile .
+	cp ./sample_projects/gbm_ov_tmz_immune_stroma_patchy/Makefile .
 	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
-	cp ./sample_projects/gbm_tmz_ov_immune_stroma_patchy/config/* ./config/
+	cp ./sample_projects/gbm_ov_tmz_immune_stroma_patchy/config/* ./config/
 
 gbm-ov-immune-stroma-patchy-sample:
 	cp ./sample_projects/gbm_ov_immune_stroma_patchy/custom_modules/* ./custom_modules/
@@ -197,15 +197,6 @@ gbm-ov-immune-stroma-patchy-sample-old:
 	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old/Makefile .
 	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
 	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old/config/* ./config/
-
-gbm-ov-immune-stroma-patchy-sample-old-new:
-	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/custom_modules/* ./custom_modules/
-	touch main.cpp && cp main.cpp main-backup.cpp
-	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/main.cpp ./main.cpp
-	cp Makefile Makefile-backup
-	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/Makefile .
-	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml
-	cp ./sample_projects/gbm_ov_immune_stroma_patchy_old_new/config/* ./config/
 
 
 # ---- intracellular projects

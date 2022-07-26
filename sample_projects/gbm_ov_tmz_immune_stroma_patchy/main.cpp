@@ -114,41 +114,7 @@ int main( int argc, char* argv[] )
 	/* Microenvironment setup */
 
 	setup_microenvironment(); // modify this in the custom code
-	double last_time_updated = 0; // keep tabs of the last time the radius was increased
-	double number_of_times_updated = 1; // the number of times the radius has been increased
-	std::vector< double > time_to_radius_increase(32); // vector for the times the migratory domain radius can increase
-	time_to_radius_increase[0] = 460;
-	time_to_radius_increase[1] = 457;
-	time_to_radius_increase[2] = 455;
-	time_to_radius_increase[3] = 452;
-	time_to_radius_increase[4] = 450;
-	time_to_radius_increase[5] = 448;
-	time_to_radius_increase[6] = 445;
-	time_to_radius_increase[7] = 443;
-	time_to_radius_increase[8] = 441;
-	time_to_radius_increase[9] = 439;
-	time_to_radius_increase[10] = 436;
-	time_to_radius_increase[11] = 434;
-	time_to_radius_increase[12] = 432;
-	time_to_radius_increase[13] = 430;
-	time_to_radius_increase[14] = 428;
-	time_to_radius_increase[15] = 426;
-	time_to_radius_increase[16] = 424;
-	time_to_radius_increase[17] = 422;
-	time_to_radius_increase[18] = 420;
-	time_to_radius_increase[19] = 418;
-	time_to_radius_increase[20] = 416;
-	time_to_radius_increase[21] = 414;
-	time_to_radius_increase[22] = 412;
-	time_to_radius_increase[23] = 410;
-	time_to_radius_increase[24] = 409;
-	time_to_radius_increase[25] = 407;
-	time_to_radius_increase[26] = 405;
-	time_to_radius_increase[27] = 403;
-	time_to_radius_increase[28] = 401;
-	time_to_radius_increase[29] = 400;
-	time_to_radius_increase[30] = 398;
-	time_to_radius_increase[31] = 10000000;
+
 
 	/* PhysiCell setup */
 
@@ -159,9 +125,8 @@ int main( int argc, char* argv[] )
 	/* Users typically start modifying here. START USERMODS */
 
 	create_cell_types();
-	setup_tissue_circle_immune();
-
-	setup_tissue();
+	// setup_tissue();
+	old_setup_tissue_circle_immune();
 
 	/* Users typically stop modifying here. END USERMODS */
 
@@ -211,6 +176,12 @@ int main( int argc, char* argv[] )
 	}
 
 	// main loop
+	int number_of_TMZ_updates = 1;
+	double last_time_updated = 0; // keep tabs of the last time the radius was increased
+	double number_of_times_updated = 1; // the number of times the radius has been increased
+
+	std::vector<double> time_to_radius(32);
+	time_to_radius = time_to_radius_increase();
 
 	try
 	{
@@ -251,12 +222,12 @@ int main( int argc, char* argv[] )
 
 			// update the microenvironment
 			microenvironment.simulate_diffusion_decay( diffusion_dt );
-			static int virus_index = microenvironment.find_density_index( "virus");
+			// static int virus_index = microenvironment.find_density_index( "virus");
 			static int wall_index = microenvironment.find_density_index( "wall");
 		  static double tumour_radius_initial = parameters.doubles("R");
 
 			// update migratory domain radius
-			if( PhysiCell_globals.current_time > last_time_updated + time_to_radius_increase[number_of_times_updated] )
+			if( PhysiCell_globals.current_time > last_time_updated + time_to_radius[number_of_times_updated] )
 			{
 				for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
 				{
@@ -270,6 +241,28 @@ int main( int argc, char* argv[] )
 				last_time_updated = PhysiCell_globals.current_time;
 				number_of_times_updated += 1;
 			}
+
+			// CODE TO INCREASE TMZ in the brain at periphery
+			// Adding PK simulation data to microenvironment
+			static int tmz_index = microenvironment.find_density_index( "tmz");
+			int PKPD_time_grid = 10;
+
+			if( PhysiCell_globals.current_time > PKPD_time_grid*number_of_TMZ_updates && PhysiCell_globals.current_time<=7200)
+			{
+				double density_in_voxels = CSF_conc_to_density( number_of_TMZ_updates );
+
+				for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )//update voxels
+				{
+					std::vector<double> loc_vector = microenvironment.mesh.voxels[n].center;
+					if( loc_vector[0]*loc_vector[0]+loc_vector[1]*loc_vector[1]<(tumour_radius_initial+10)*(tumour_radius_initial+10)
+						&& loc_vector[0]*loc_vector[0]+loc_vector[1]*loc_vector[1]>(tumour_radius_initial-10)*(tumour_radius_initial-10))	//1270*1270)
+					{
+						microenvironment(n)[tmz_index] = microenvironment(n)[tmz_index]+density_in_voxels;
+					}
+				}
+				number_of_TMZ_updates +=1;
+			}
+			 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 			// run PhysiCell
 			((Cell_Container *)microenvironment.agent_container)->update_all_cells( PhysiCell_globals.current_time );
@@ -306,4 +299,35 @@ int main( int argc, char* argv[] )
 	BioFVM::display_stopwatch_value( std::cout , BioFVM::runtime_stopwatch_value() );
 
 	return 0;
+}
+//function to get correct units
+double CSF_conc_to_density(double time)
+{
+	int indexing_CSF_Vec = time-1;
+	double CSF_value = CSF_vals(indexing_CSF_Vec);
+	double density_in_voxels = CSF_value*1e3/1e6; // converting miligram to microgram and liter to microliter
+
+	return density_in_voxels;
+}
+
+
+//function to read .bin data
+double CSF_vals(int indexing_CSF_Vec)
+{
+
+	std::streampos size;
+	char * memblock;
+	std::ifstream file ("CSF_TMZ.bin", std::ios::in|std::ios::binary|std::ios::ate);
+	size = file.tellg();
+
+	memblock = new char [size];
+	file.seekg (0, std::ios::beg);
+	file.read (memblock, size);
+	file.close();
+
+	double* double_values = (double*)memblock;//reinterpret as doubles
+
+	std::cout<<"conc returning: "<<double_values[indexing_CSF_Vec]<<std::endl;
+
+	return double_values[indexing_CSF_Vec];
 }
