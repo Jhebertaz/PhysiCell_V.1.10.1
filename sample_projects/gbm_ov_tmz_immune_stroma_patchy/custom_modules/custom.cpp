@@ -439,7 +439,7 @@ void custom_update_cell_velocity( Cell* pCell, Phenotype& phenotype, double dt)
 // Custom distribution
 std::vector<double> time_to_radius_increase() // vector for the times the migratory domain radius can increase
 {
-	std::vector<double> time_to_radius(32);
+	std::vector< double > time_to_radius(62);
 	time_to_radius[0] = 460;
 	time_to_radius[1] = 457;
 	time_to_radius[2] = 455;
@@ -471,9 +471,77 @@ std::vector<double> time_to_radius_increase() // vector for the times the migrat
 	time_to_radius[28] = 401;
 	time_to_radius[29] = 400;
 	time_to_radius[30] = 398;
-	time_to_radius[31] = 10000000;
+	time_to_radius[31] = 396;
+	time_to_radius[32] = 394;
+	time_to_radius[33] = 393;
+	time_to_radius[34] = 391;
+	time_to_radius[35] = 390;
+	time_to_radius[36] = 388;
+	time_to_radius[37] = 386;
+	time_to_radius[38] = 385;
+	time_to_radius[39] = 383;
+	time_to_radius[40] = 382;
+	time_to_radius[41] = 380;
+	time_to_radius[42] = 379;
+	time_to_radius[43] = 377;
+	time_to_radius[44] = 376;
+	time_to_radius[45] = 374;
+	time_to_radius[46] = 373;
+	time_to_radius[47] = 371;
+	time_to_radius[48] = 370;
+	time_to_radius[49] = 369;
+	time_to_radius[50] = 367;
+	time_to_radius[51] = 366;
+	time_to_radius[52] = 364;
+	time_to_radius[53] = 363;
+	time_to_radius[54] = 362;
+	time_to_radius[55] = 360;
+	time_to_radius[56] = 359;
+	time_to_radius[57] = 358;
+	time_to_radius[58] = 357;
+	time_to_radius[59] = 355;
+	time_to_radius[60] = 354;
+	time_to_radius[61] = 10000000;
 	return time_to_radius;
 }
+
+// std::vector<double> time_to_radius_increase() // vector for the times the migratory domain radius can increase
+// {
+// 	std::vector<double> time_to_radius(32);
+// 	time_to_radius[0] = 460;
+// 	time_to_radius[1] = 457;
+// 	time_to_radius[2] = 455;
+// 	time_to_radius[3] = 452;
+// 	time_to_radius[4] = 450;
+// 	time_to_radius[5] = 448;
+// 	time_to_radius[6] = 445;
+// 	time_to_radius[7] = 443;
+// 	time_to_radius[8] = 441;
+// 	time_to_radius[9] = 439;
+// 	time_to_radius[10] = 436;
+// 	time_to_radius[11] = 434;
+// 	time_to_radius[12] = 432;
+// 	time_to_radius[13] = 430;
+// 	time_to_radius[14] = 428;
+// 	time_to_radius[15] = 426;
+// 	time_to_radius[16] = 424;
+// 	time_to_radius[17] = 422;
+// 	time_to_radius[18] = 420;
+// 	time_to_radius[19] = 418;
+// 	time_to_radius[20] = 416;
+// 	time_to_radius[21] = 414;
+// 	time_to_radius[22] = 412;
+// 	time_to_radius[23] = 410;
+// 	time_to_radius[24] = 409;
+// 	time_to_radius[25] = 407;
+// 	time_to_radius[26] = 405;
+// 	time_to_radius[27] = 403;
+// 	time_to_radius[28] = 401;
+// 	time_to_radius[29] = 400;
+// 	time_to_radius[30] = 398;
+// 	time_to_radius[31] = 10000000;
+// 	return time_to_radius;
+// }
 std::vector<double> go_times_cumulative()
 {
 	// setting up distributions for movement and persistance of cells

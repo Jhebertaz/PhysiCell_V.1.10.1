@@ -546,7 +546,7 @@
 		<D_virus type="double" units="micron^2/min" description="Diffusion coefficient for virus">1.4766</D_virus>
 		<alpha type="double" units="virions" description="Virus burst size">6600</alpha>
 		<delta_V type="double" units="1/min" description="release rate of virus">0.1466</delta_V>
-		<gamma type="double" units="1/min" description="virus replication rate">0.0081</gamma><!--from article 0.4886-->
+		<gamma type="double" units="1/min" description="virus replication rate">0.0081</gamma>
 		<m_half type="double" units="virions" description="infection threshold half-effect">10</m_half>
 		<rho_star_virus type="double" units="amount/micron" description="Virus saturation concentration">268.51</rho_star_virus>
 		<V_0 type="double" units="virions/micron^3" description="Initial concentration of virus">3.0248</V_0>

@@ -125,8 +125,8 @@ int main( int argc, char* argv[] )
 	/* Users typically start modifying here. START USERMODS */
 
 	create_cell_types();
-	// setup_tissue();
-	old_setup_tissue_circle_immune();
+	setup_tissue();
+	// old_setup_tissue_circle_immune();
 
 	/* Users typically stop modifying here. END USERMODS */
 

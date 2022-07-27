@@ -314,7 +314,6 @@ double CSF_conc_to_density(double time)
 //function to read .bin data
 double CSF_vals(int indexing_CSF_Vec)
 {
-
 	std::streampos size;
 	char * memblock;
 	std::ifstream file ("CSF_TMZ.bin", std::ios::in|std::ios::binary|std::ios::ate);

@@ -94,6 +94,9 @@ std::vector<double> go_times_cumulative(void);
 std::vector<double> persistance_distribution(void);
 std::vector<double> speed_cumulative(void);
 
+// for main
+double CSF_vals(int indexing_CSF_Vec);
+double CSF_conc_to_density(double time);
 
 void testing();
 
@@ -130,9 +133,6 @@ double maximal_pressure(Cell* pCell);
 
 // tmz effect
 void cancer_tmz_effect(Cell* pCell, Phenotype& phenotype);
-// for main
-double CSF_vals(int indexing_CSF_Vec);
-double CSF_conc_to_density(double time);
 
 
 

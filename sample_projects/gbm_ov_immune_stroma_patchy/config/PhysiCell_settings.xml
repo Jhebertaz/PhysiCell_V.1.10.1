@@ -1,9 +1,9 @@
 <PhysiCell_settings version="devel-version">
 	<domain>
-		<x_min>-1500</x_min>
-		<x_max>1500</x_max>
-		<y_min>-1500</y_min>
-		<y_max>1500</y_max>
+		<x_min>-1000</x_min>
+		<x_max>1000</x_max>
+		<y_min>-1000</y_min>
+		<y_max>1000</y_max>
 		<z_min>-10</z_min>
 		<z_max>10</z_max>
 		<dx>20</dx>
@@ -441,7 +441,7 @@
 
   </cell_definitions>
 	<initial_conditions>
-		<cell_positions type="csv" enabled="false">
+		<cell_positions type="csv" enabled="true">
 			<folder>./config</folder>
 			<filename>cells.csv</filename>
 		</cell_positions>
@@ -453,7 +453,7 @@
 		<kappa type="double" units="dimensionless">1.208</kappa>
 		<c_s type="double" units="mu g/hour^2" description="spring constant">0.01</c_s>
 		<epsilon type="double" units="micron" description="length of voxel">20</epsilon>
-		<xhi type="double" units="cells/micron^2" description="Density of tumour slice">0.0039</xhi> <!-- from article 0.9398--> <!--can be calculate-->
+		<xhi type="double" units="cells/micron^2" description="Density of tumour slice">0.004133</xhi> <!--0.0039  from article 0.9398--> <!--can be calculate cell/tumour area 4133/1000*1000-->
 		<proportion type="double" units="dimensionless">0.7</proportion>
 		<p_max type="double" units="1/micron 1/min" description="Maximum proliferation pressure">5.99782</p_max>
 		<pbar_max type="double" units="dimensionless" description="Maximum proliferation simple pressure">219.79</pbar_max>
@@ -463,7 +463,7 @@
 
 		<!-- tumour -->
 		<A_frag type="double" units="mm^2" description="Total area of tumour slice">5.0644</A_frag>
-		<R type="double" units="micron" description="Radius of tumour slice">1269.7</R>
+		<R type="double" units="micron" description="Radius of tumour slice">500</R> <!--1269.7 from the article-->
 		<sigma type="double" units="dimensionless" description="Standard deviation for patch radius">0.4742</sigma>
 		<mu type="double" units="micron" description="Average patch radius">402</mu>
 		<eta type="double" units="micron hour" description="velocity of proportionality">0.133</eta>
