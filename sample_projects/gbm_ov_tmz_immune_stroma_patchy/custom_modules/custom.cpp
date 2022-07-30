@@ -1522,7 +1522,7 @@ void testing()
 	// location of virus
 	double x_virus = 58;
 	double y_virus = 17;
-	double zone_radius = 20;
+	double zone_radius = 10;
 	// double tumour_radius = parameters.doubles("R");
 
 
@@ -1540,7 +1540,7 @@ void testing()
 	// location of virus
 	x_virus = -58;
 	y_virus = -17;
-	zone_radius = 20;
+	zone_radius = 10;
 	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
 	{
 		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
@@ -1554,7 +1554,7 @@ void testing()
 	// location of virus
 	x_virus = -100;
 	y_virus = -100;
-	zone_radius = 50;
+	zone_radius = 10;
 	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
 	{
 		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
@@ -1569,7 +1569,7 @@ void testing()
 	// location of virus
 	x_virus = -200;
 	y_virus = 100;
-	zone_radius = 50;
+	zone_radius = 10;
 	for (int n = 0 ; n < microenvironment.mesh.voxels.size(); n++)
 	{
 		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;

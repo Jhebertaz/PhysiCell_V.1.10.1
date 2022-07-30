@@ -462,7 +462,7 @@
 		<c_j_ccr type="double" unit="micron/min" description="cell-cell repulsive force coefficient">10</c_j_ccr>
 
 		<!-- tumour -->
-		<A_frag type="double" units="mm^2" description="Total area of tumour slice">5.0644</A_frag>
+		<A_frag type="double" units="mm^2" description="Total area of tumour slice">1</A_frag> <!-- 5.0644-->
 		<R type="double" units="micron" description="Radius of tumour slice">500</R> <!--1269.7 from the article-->
 		<sigma type="double" units="dimensionless" description="Standard deviation for patch radius">0.4742</sigma>
 		<mu type="double" units="micron" description="Average patch radius">402</mu>

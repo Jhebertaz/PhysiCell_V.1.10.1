@@ -67,6 +67,8 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
+#include <string>
 #include <iostream>
 #include <ctime>
 #include <cmath>
@@ -125,8 +127,8 @@ int main( int argc, char* argv[] )
 	/* Users typically start modifying here. START USERMODS */
 
 	create_cell_types();
-	// setup_tissue();
-	old_setup_tissue_circle_immune();
+	setup_tissue();
+	// old_setup_tissue_circle_immune();
 
 	/* Users typically stop modifying here. END USERMODS */
 
@@ -250,7 +252,6 @@ int main( int argc, char* argv[] )
 			if( PhysiCell_globals.current_time > PKPD_time_grid*number_of_TMZ_updates && PhysiCell_globals.current_time<=7200)
 			{
 				double density_in_voxels = CSF_conc_to_density( number_of_TMZ_updates );
-
 				for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )//update voxels
 				{
 					std::vector<double> loc_vector = microenvironment.mesh.voxels[n].center;
@@ -312,21 +313,55 @@ double CSF_conc_to_density(double time)
 
 
 //function to read .bin data
+// double CSF_vals(int indexing_CSF_Vec)
+// {
+//  //https://m.cplusplus.com/doc/tutorial/files/
+// 	std::streampos size;
+//   char * memblock;
+// 	std::ifstream file ("CSF_TMZ.bin", std::ios::in|std::ios::binary|std::ios::ate);
+//
+//
+// 	// if (file.is_open())
+// 	// {
+// 	std::cout<<"file open"<<std::endl;
+// 	size = file.tellg();
+//   memblock = new char [size];
+//   file.seekg (0, std::ios::beg);
+//   file.read (memblock, size);
+//   file.close();
+// 	// }
+//
+// 	double* double_values = (double*)memblock;//reinterpret as doubles
+//
+// 	std::cout<<"conc returning: "<<	double_values[indexing_CSF_Vec]<<std::endl;
+//
+// 	// std::cout<<"conc returning: "<<double_values[indexing_CSF_Vec]<<std::endl;
+// 	// delete[] memblock;
+// 	return double_values[indexing_CSF_Vec];
+// }
+
 double CSF_vals(int indexing_CSF_Vec)
 {
-	std::streampos size;
-	char * memblock;
-	std::ifstream file ("CSF_TMZ.bin", std::ios::in|std::ios::binary|std::ios::ate);
-	size = file.tellg();
-
-	memblock = new char [size];
-	file.seekg (0, std::ios::beg);
-	file.read (memblock, size);
-	file.close();
-
-	double* double_values = (double*)memblock;//reinterpret as doubles
-
-	std::cout<<"conc returning: "<<double_values[indexing_CSF_Vec]<<std::endl;
-
-	return double_values[indexing_CSF_Vec];
+	std::string line, csvItem;
+  std::ifstream myfile("CSF_TMZ.csv");
+  int lineNumber = 0;
+  int lineNumberSought = indexing_CSF_Vec;  // you may get it as argument
+  // if (myfile.is_open())
+	// {
+	while (std::getline(myfile, line))
+	{
+		lineNumber++;
+		std::cout << "lineNumber:"<< lineNumber << std::endl;
+		if(lineNumber == lineNumberSought)
+		{
+			std::cout << "line:"<< line << std::endl;
+			std::istringstream myline(line);
+			while(std::getline(myline, csvItem, ','))
+			{
+				std::cout <<"csvItem:" <<csvItem << std::endl;
+			}
+		}
+	}
+  myfile.close();
+  return 0;
 }
