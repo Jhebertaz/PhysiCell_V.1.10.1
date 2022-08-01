@@ -131,6 +131,10 @@ double equilibrium_spacing();
 double pressure_scale(Cell* pCell);
 double maximal_pressure(Cell* pCell);
 
+
+// OTHER
+double one_column_bin_reader(int idx);
+
 // tmz effect
 void cancer_tmz_effect(Cell* pCell, Phenotype& phenotype);
 

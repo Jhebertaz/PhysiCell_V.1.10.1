@@ -1479,6 +1479,67 @@ void stromal_phenotype(Cell* pCell, Phenotype& phenotype, double dt) 						// do
 }
 
 
+// OTHER
+
+//function to get correct units
+double CSF_conc_to_density(double time)
+{
+	int indexing_CSF_Vec = time-1;
+	double CSF_value = one_column_bin_reader(indexing_CSF_Vec);
+	double density_in_voxels = CSF_value*1e3/1e6; // converting miligram to microgram and liter to microliter
+
+	return density_in_voxels;
+}
+double one_column_bin_reader(int idx)
+{
+  // open file
+  std::ifstream file("CSF_TMZ.bin", std::ios::in|std::ios::binary|std::ios::ate);
+
+  if (file.is_open())
+  {
+    // std::cout<<"file opened"<<std::endl;
+
+    // stream position
+    std::streampos size = file.tellg();
+
+    // std::cout<<"Size : "<<size<<std::endl;
+
+		char * memblock = new char [size];
+
+	  file.seekg (0, std::ios::beg);
+	  file.read (memblock, size);
+
+		//reinterpret as doubles
+		double* double_values = (double*)memblock;
+
+		std::cout<<"conc returning: "<<	double_values[idx]<<std::endl;
+
+		delete[] memblock;
+    file.close();
+		return double_values[idx];
+  }
+  else
+  {
+    std::cout<<"failed"<<std::endl;
+  }
+  return 0;
+}
+
+
+// tmz functions
+// A1=exp(-k_a time)*c_1;
+//
+// n0 = (-CL/V_D);
+// n1 = (k_a/(n0 - k_23 + k_a)));
+// n2 = (-k_23/((-k_23+k_a)-(n0-k_23)));
+// A2=exp(n1)*c_1 + exp((n0-k_23)*time)
+//
+// n3= -k_a*k_23/(n0-k_23+k_a)*(-k_32-k_a)
+
+// testing
+
+
+
 void testing()
 {
 	// setup initial concentration of "wall", virus

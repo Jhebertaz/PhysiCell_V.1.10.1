@@ -64,11 +64,8 @@
 #                                                                             #
 ###############################################################################
 */
-
 #include <cstdio>
 #include <cstdlib>
-#include <sstream>
-#include <string>
 #include <iostream>
 #include <ctime>
 #include <cmath>
@@ -79,7 +76,6 @@
 #include "./modules/PhysiCell_standard_modules.h"
 
 // put custom code modules here!
-
 #include "./custom_modules/custom.h"
 
 using namespace BioFVM;
@@ -300,68 +296,4 @@ int main( int argc, char* argv[] )
 	BioFVM::display_stopwatch_value( std::cout , BioFVM::runtime_stopwatch_value() );
 
 	return 0;
-}
-//function to get correct units
-double CSF_conc_to_density(double time)
-{
-	int indexing_CSF_Vec = time-1;
-	double CSF_value = CSF_vals(indexing_CSF_Vec);
-	double density_in_voxels = CSF_value*1e3/1e6; // converting miligram to microgram and liter to microliter
-
-	return density_in_voxels;
-}
-
-
-//function to read .bin data
-// double CSF_vals(int indexing_CSF_Vec)
-// {
-//  //https://m.cplusplus.com/doc/tutorial/files/
-// 	std::streampos size;
-//   char * memblock;
-// 	std::ifstream file ("CSF_TMZ.bin", std::ios::in|std::ios::binary|std::ios::ate);
-//
-//
-// 	// if (file.is_open())
-// 	// {
-// 	std::cout<<"file open"<<std::endl;
-// 	size = file.tellg();
-//   memblock = new char [size];
-//   file.seekg (0, std::ios::beg);
-//   file.read (memblock, size);
-//   file.close();
-// 	// }
-//
-// 	double* double_values = (double*)memblock;//reinterpret as doubles
-//
-// 	std::cout<<"conc returning: "<<	double_values[indexing_CSF_Vec]<<std::endl;
-//
-// 	// std::cout<<"conc returning: "<<double_values[indexing_CSF_Vec]<<std::endl;
-// 	// delete[] memblock;
-// 	return double_values[indexing_CSF_Vec];
-// }
-
-double CSF_vals(int indexing_CSF_Vec)
-{
-	std::string line, csvItem;
-  std::ifstream myfile("CSF_TMZ.csv");
-  int lineNumber = 0;
-  int lineNumberSought = indexing_CSF_Vec;  // you may get it as argument
-  // if (myfile.is_open())
-	// {
-	while (std::getline(myfile, line))
-	{
-		lineNumber++;
-		std::cout << "lineNumber:"<< lineNumber << std::endl;
-		if(lineNumber == lineNumberSought)
-		{
-			std::cout << "line:"<< line << std::endl;
-			std::istringstream myline(line);
-			while(std::getline(myline, csvItem, ','))
-			{
-				std::cout <<"csvItem:" <<csvItem << std::endl;
-			}
-		}
-	}
-  myfile.close();
-  return 0;
 }
