@@ -116,14 +116,14 @@ double one_column_bin_reader(int idx)
 	return 0.0;
 }
 
-double CSF_conc_to_density(double time)
-{
-	int indexing_CSF_Vec = time-1;
-	double CSF_value = one_column_bin_reader(time);
-	double density_in_voxels = CSF_value*1e3/1e6; // converting miligram to microgram and liter to microliter
-
-	return density_in_voxels;
-}
+// double CSF_conc_to_density(double time)
+// {
+// 	int indexing_CSF_Vec = time-1;
+// 	double CSF_value = one_column_bin_reader(time);
+// 	double density_in_voxels = CSF_value*1e3/1e6; // converting miligram to microgram and liter to microliter
+//
+// 	return density_in_voxels;
+// }
 
 
 int main( int argc, char* argv[] )
@@ -169,6 +169,7 @@ int main( int argc, char* argv[] )
 
 	create_cell_types();
 	setup_tissue();
+	// old_setup_tissue_circle_immune();
 
 	/* Users typically stop modifying here. END USERMODS */
 
@@ -286,23 +287,23 @@ int main( int argc, char* argv[] )
 
 			// CODE TO INCREASE TMZ in the brain at periphery
 			// Adding PK simulation data to microenvironment
-			static int tmz_index = microenvironment.find_density_index( "tmz");
-			int PKPD_time_grid = 10;
-
-			if( PhysiCell_globals.current_time > PKPD_time_grid*number_of_TMZ_updates && PhysiCell_globals.current_time<=7200)
-			{
-				double density_in_voxels = CSF_conc_to_density( number_of_TMZ_updates );
-				for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )//update voxels
-				{
-					std::vector<double> loc_vector = microenvironment.mesh.voxels[n].center;
-					if( loc_vector[0]*loc_vector[0]+loc_vector[1]*loc_vector[1]<(tumour_radius_initial+10)*(tumour_radius_initial+10)
-						&& loc_vector[0]*loc_vector[0]+loc_vector[1]*loc_vector[1]>(tumour_radius_initial-10)*(tumour_radius_initial-10))	//1270*1270)
-					{
-						microenvironment(n)[tmz_index] = microenvironment(n)[tmz_index]+density_in_voxels;
-					}
-				}
-				number_of_TMZ_updates +=1;
-			}
+			// static int tmz_index = microenvironment.find_density_index( "tmz");
+			// int PKPD_time_grid = 10;
+			//
+			// if( PhysiCell_globals.current_time > PKPD_time_grid*number_of_TMZ_updates && PhysiCell_globals.current_time<=7200)
+			// {
+			// 	double density_in_voxels = CSF_conc_to_density( number_of_TMZ_updates );
+			// 	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )//update voxels
+			// 	{
+			// 		std::vector<double> loc_vector = microenvironment.mesh.voxels[n].center;
+			// 		if( loc_vector[0]*loc_vector[0]+loc_vector[1]*loc_vector[1]<(tumour_radius_initial+10)*(tumour_radius_initial+10)
+			// 			&& loc_vector[0]*loc_vector[0]+loc_vector[1]*loc_vector[1]>(tumour_radius_initial-10)*(tumour_radius_initial-10))	//1270*1270)
+			// 		{
+			// 			microenvironment(n)[tmz_index] = microenvironment(n)[tmz_index]+density_in_voxels;
+			// 		}
+			// 	}
+			// 	number_of_TMZ_updates +=1;
+			// }
 			 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 			// run PhysiCell

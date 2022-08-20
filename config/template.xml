@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <PhysiCell_settings version="devel-version">
 	<domain>
 		<x_min>-1000</x_min>
@@ -12,7 +13,7 @@
 		<use_2D>true</use_2D>
 	</domain>
 	<overall>
-		<max_time units="min">4320</max_time>
+		<max_time units="min">300</max_time>
 		<time_units>min</time_units>
 		<space_units>micron</space_units>
 		<dt_diffusion units="min">0.01</dt_diffusion>

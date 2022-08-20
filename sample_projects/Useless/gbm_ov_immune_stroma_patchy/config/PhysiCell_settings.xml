@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <PhysiCell_settings version="devel-version">
 	<domain>
 		<x_min>-1000</x_min>
@@ -38,87 +39,57 @@
 	</save>
 	<options>
 		<legacy_random_points_on_sphere_in_divide>false</legacy_random_points_on_sphere_in_divide>
-    <virtual_wall_at_domain_edge>false</virtual_wall_at_domain_edge>
+		<virtual_wall_at_domain_edge>false</virtual_wall_at_domain_edge>
 	</options>
 	<microenvironment_setup>
 		<variable name="virus" units="dimensionless" ID="0">
-      <physical_parameter_set>
-        <diffusion_coefficient units="micron^2/min">1.4766</diffusion_coefficient> <!--1.2766-->
-        <decay_rate units="1/min">0.0029</decay_rate>
-      </physical_parameter_set>
-      <initial_condition units="mmHg">0.0</initial_condition>
-      <Dirichlet_boundary_condition units="mmHg" enabled="false">0.0</Dirichlet_boundary_condition>
-      <Dirichlet_options>
-        <boundary_value ID="xmin" enabled="false">0</boundary_value>
-        <boundary_value ID="xmax" enabled="false">0</boundary_value>
-        <boundary_value ID="ymin" enabled="false">0</boundary_value>
-        <boundary_value ID="ymax" enabled="false">0</boundary_value>
-        <boundary_value ID="zmin" enabled="false">0</boundary_value>
-        <boundary_value ID="zmax" enabled="false">0</boundary_value>
-      </Dirichlet_options>
-    </variable>
-		<options>
-			<calculate_gradients>true</calculate_gradients>
-			<track_internalized_substrates_in_each_agent>true</track_internalized_substrates_in_each_agent>
-			<initial_condition type="matlab" enabled="false">
-				<filename>./config/initial.mat</filename>
-			</initial_condition>
-			<dirichlet_nodes type="matlab" enabled="false">
-				<filename>./config/dirichlet.mat</filename>
-			</dirichlet_nodes>
-		</options>
+			<physical_parameter_set>
+				<diffusion_coefficient units="micron^2/min">1.4766</diffusion_coefficient>
+				<decay_rate units="1/min">0.0029</decay_rate>
+			</physical_parameter_set>
+			<initial_condition units="mmHg">0.0</initial_condition>
+			<Dirichlet_boundary_condition units="mmHg" enabled="false">0.0</Dirichlet_boundary_condition>
+			<Dirichlet_options>
+				<boundary_value ID="xmin" enabled="false">0</boundary_value>
+				<boundary_value ID="xmax" enabled="false">0</boundary_value>
+				<boundary_value ID="ymin" enabled="false">0</boundary_value>
+				<boundary_value ID="ymax" enabled="false">0</boundary_value>
+				<boundary_value ID="zmin" enabled="false">0</boundary_value>
+				<boundary_value ID="zmax" enabled="false">0</boundary_value>
+			</Dirichlet_options>
+		</variable>
 		<variable name="wall" units="dimensionless" ID="1">
-      <physical_parameter_set>
-        <diffusion_coefficient units="micron^2/min">0.0</diffusion_coefficient>
-        <decay_rate units="1/min">0.0</decay_rate>
-      </physical_parameter_set>
-      <initial_condition units="mmHg">0.0</initial_condition>
-      <Dirichlet_boundary_condition units="mmHg" enabled="true">0.0</Dirichlet_boundary_condition>
-      <Dirichlet_options>
-        <boundary_value ID="xmin" enabled="false">0</boundary_value>
-        <boundary_value ID="xmax" enabled="false">0</boundary_value>
-        <boundary_value ID="ymin" enabled="false">0</boundary_value>
-        <boundary_value ID="ymax" enabled="false">0</boundary_value>
-        <boundary_value ID="zmin" enabled="false">0</boundary_value>
-        <boundary_value ID="zmax" enabled="false">0</boundary_value>
-      </Dirichlet_options>
-    </variable>
-		<options>
-			<calculate_gradients>true</calculate_gradients>
-			<track_internalized_substrates_in_each_agent>true</track_internalized_substrates_in_each_agent>
-			<initial_condition type="matlab" enabled="false">
-				<filename>./config/initial.mat</filename>
-			</initial_condition>
-			<dirichlet_nodes type="matlab" enabled="false">
-				<filename>./config/dirichlet.mat</filename>
-			</dirichlet_nodes>
-		</options>
-    <variable name="chemokine" units="dimensionless" ID="2">
-      <physical_parameter_set>
-        <diffusion_coefficient units="micron^2/min">555.56</diffusion_coefficient>
-        <decay_rate units="1/min">0.00000806</decay_rate>
-      </physical_parameter_set>
-      <initial_condition units="mmHg">0.0</initial_condition>
-      <Dirichlet_boundary_condition units="mmHg" enabled="false">0.0</Dirichlet_boundary_condition>
-      <Dirichlet_options>
-        <boundary_value ID="xmin" enabled="false">0.0</boundary_value>
-        <boundary_value ID="xmax" enabled="false">0.0</boundary_value>
-        <boundary_value ID="ymin" enabled="false">0.0</boundary_value>
-        <boundary_value ID="ymax" enabled="false">0.0</boundary_value>
-        <boundary_value ID="zmin" enabled="false">0.0</boundary_value>
-        <boundary_value ID="zmax" enabled="false">0.0</boundary_value>
-      </Dirichlet_options>
-    </variable>
-		<options>
-			<calculate_gradients>true</calculate_gradients>
-			<track_internalized_substrates_in_each_agent>true</track_internalized_substrates_in_each_agent>
-			<initial_condition type="matlab" enabled="false">
-				<filename>./config/initial.mat</filename>
-			</initial_condition>
-			<dirichlet_nodes type="matlab" enabled="false">
-				<filename>./config/dirichlet.mat</filename>
-			</dirichlet_nodes>
-		</options>
+			<physical_parameter_set>
+				<diffusion_coefficient units="micron^2/min">0.0</diffusion_coefficient>
+				<decay_rate units="1/min">0.0</decay_rate>
+			</physical_parameter_set>
+			<initial_condition units="mmHg">0.0</initial_condition>
+			<Dirichlet_boundary_condition units="mmHg" enabled="true">0.0</Dirichlet_boundary_condition>
+			<Dirichlet_options>
+				<boundary_value ID="xmin" enabled="false">0</boundary_value>
+				<boundary_value ID="xmax" enabled="false">0</boundary_value>
+				<boundary_value ID="ymin" enabled="false">0</boundary_value>
+				<boundary_value ID="ymax" enabled="false">0</boundary_value>
+				<boundary_value ID="zmin" enabled="false">0</boundary_value>
+				<boundary_value ID="zmax" enabled="false">0</boundary_value>
+			</Dirichlet_options>
+		</variable>
+		<variable name="chemokine" units="dimensionless" ID="2">
+			<physical_parameter_set>
+				<diffusion_coefficient units="micron^2/min">555.56</diffusion_coefficient>
+				<decay_rate units="1/min">0.00000806</decay_rate>
+			</physical_parameter_set>
+			<initial_condition units="mmHg">0.0</initial_condition>
+			<Dirichlet_boundary_condition units="mmHg" enabled="false">0.0</Dirichlet_boundary_condition>
+			<Dirichlet_options>
+				<boundary_value ID="xmin" enabled="false">0.0</boundary_value>
+				<boundary_value ID="xmax" enabled="false">0.0</boundary_value>
+				<boundary_value ID="ymin" enabled="false">0.0</boundary_value>
+				<boundary_value ID="ymax" enabled="false">0.0</boundary_value>
+				<boundary_value ID="zmin" enabled="false">0.0</boundary_value>
+				<boundary_value ID="zmax" enabled="false">0.0</boundary_value>
+			</Dirichlet_options>
+		</variable>
 		<variable name="tmz" units="dimensionless" ID="3">
 			<physical_parameter_set>
 				<diffusion_coefficient units="micron^2/min">5.2324</diffusion_coefficient>
@@ -145,6 +116,36 @@
 				<filename>./config/dirichlet.mat</filename>
 			</dirichlet_nodes>
 		</options>
+		<options>
+			<calculate_gradients>true</calculate_gradients>
+			<track_internalized_substrates_in_each_agent>true</track_internalized_substrates_in_each_agent>
+			<initial_condition type="matlab" enabled="false">
+				<filename>./config/initial.mat</filename>
+			</initial_condition>
+			<dirichlet_nodes type="matlab" enabled="false">
+				<filename>./config/dirichlet.mat</filename>
+			</dirichlet_nodes>
+		</options>
+		<options>
+			<calculate_gradients>true</calculate_gradients>
+			<track_internalized_substrates_in_each_agent>true</track_internalized_substrates_in_each_agent>
+			<initial_condition type="matlab" enabled="false">
+				<filename>./config/initial.mat</filename>
+			</initial_condition>
+			<dirichlet_nodes type="matlab" enabled="false">
+				<filename>./config/dirichlet.mat</filename>
+			</dirichlet_nodes>
+		</options>
+		<options>
+			<calculate_gradients>true</calculate_gradients>
+			<track_internalized_substrates_in_each_agent>true</track_internalized_substrates_in_each_agent>
+			<initial_condition type="matlab" enabled="false">
+				<filename>./config/initial.mat</filename>
+			</initial_condition>
+			<dirichlet_nodes type="matlab" enabled="false">
+				<filename>./config/dirichlet.mat</filename>
+			</dirichlet_nodes>
+		</options>
 	</microenvironment_setup>
 	<cell_definitions>
 		<cell_definition name="default" ID="0">
@@ -156,7 +157,7 @@
 				</cycle>
 				<death>
 					<model code="100" name="apoptosis">
-						<death_rate units="1/min">0</death_rate><!--5.31667e-05-->
+						<death_rate units="1/min">0</death_rate>
 						<phase_durations units="min">
 							<duration index="0" fixed_duration="true">516</duration>
 						</phase_durations>
@@ -173,7 +174,7 @@
 						<death_rate units="1/min">0.0</death_rate>
 						<phase_durations units="min">
 							<duration index="0" fixed_duration="true">0</duration>
-						<duration index="1" fixed_duration="true">86400</duration>
+							<duration index="1" fixed_duration="true">86400</duration>
 						</phase_durations>
 						<parameters>
 							<unlysed_fluid_change_rate units="1/min">0.05</unlysed_fluid_change_rate>
@@ -235,13 +236,12 @@
 					</substrate>
 					<substrate name="tmz">
 						<secretion_rate units="1/min">0</secretion_rate>
-						<secretion_target units="substrate density">0</secretion_target> <!-- to be know-->
+						<secretion_target units="substrate density">0</secretion_target>
 						<uptake_rate units="1/min">0</uptake_rate>
 						<net_export_rate units="total substrate/min">0</net_export_rate>
 					</substrate>
 				</secretion>
-				<!-- <molecular /> -->
-			</phenotype>
+--&gt;			</phenotype>
 			<custom_data>
 				<sample units="" description="">1.0</sample>
 				<intracellular_virus_amount units="virions">0.0</intracellular_virus_amount>
@@ -263,22 +263,13 @@
 					<fluid units="micron^3">146.57</fluid>
 					<solid units="micron^3">48.85</solid>
 					<nuclear units="micron^3">95.2</nuclear>
-					<!-- <nuclear_solid units="micron^3">23.8</nuclear_solid> -->
-					<!-- <nuclear_fluid units="micron^3">71.4</nuclear_fluid> -->
 					<cytoplasmic units="micron^3">100.23</cytoplasmic>
 					<cytoplasmic_fluid units="micron^3">75.17</cytoplasmic_fluid>
 					<cytoplasmic_solid units="micron^3">25.05</cytoplasmic_solid>
 					<cytoplasmic_to_nuclear_ratio units="dimensionless">1.05</cytoplasmic_to_nuclear_ratio>
-					<target_solid_cytoplasmic	units="micron^3">25.05</target_solid_cytoplasmic>
-					<!-- <target_solid_nuclear	units="micron^3">48.8580489486285</target_solid_nuclear> -->
+					<target_solid_cytoplasmic units="micron^3">25.05</target_solid_cytoplasmic>
 					<target_cytoplasmic_to_nuclear_ratio units="dimensionless">1.05</target_cytoplasmic_to_nuclear_ratio>
 					<target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
-					<!-- <fluid_change_rate units="1/min">0.05</fluid_change_rate> -->
-					<!-- <cytoplasmic_biomass_change_rate units="1/min">0.0045</cytoplasmic_biomass_change_rate> -->
-					<!-- <nuclear_biomass_change_rate units="1/min">0.0055</nuclear_biomass_change_rate> -->
-					<!-- <calcified_fraction units="dimensionless">0.0</calcified_fraction>
-					<calcification_rate units="1/min">0.0</calcification_rate>
-					<relative_rupture_volume units="dimensionless">0.0</relative_rupture_volume> -->
 				</volume>
 				<motility>
 					<speed units="micron/min">4</speed>
@@ -294,146 +285,120 @@
 					</substrate>
 				</secretion>
 			</phenotype>
-		  <custom_data>
-		    <sample units="" description="">1.0</sample>
-		  </custom_data>
+			<custom_data>
+				<sample units="" description="">1.0</sample>
+			</custom_data>
 		</cell_definition>
 		<cell_definition name="cancer" ID="2" parent_type="default">
-		  <phenotype>
-		    <cycle code="5" name="live">
-		      <phase_transition_rates units="1/min">
-		        <rate start_index="0" end_index="0" fixed_duration="false">0.000735</rate>
-		      </phase_transition_rates>
-		    </cycle>
-		    <volume>
-		      <fluid_fraction units="dimensionless">0.75</fluid_fraction>
-		      <total units="micron^3">5203.7</total>
-		      <fluid units="micron^3">3902.77</fluid>
-		      <solid units="micron^3">1300.92</solid>
-		      <nuclear units="micron^3">740</nuclear>
-		      <!-- <nuclear_solid units="micron^3">185</nuclear_solid>
-		      <nuclear_fluid units="micron^3">555</nuclear_fluid> -->
-		      <cytoplasmic units="micron^3">4463.7</cytoplasmic>
-		      <cytoplasmic_fluid units="micron^3">3347.77</cytoplasmic_fluid>
-		      <cytoplasmic_solid units="micron^3">1115.92</cytoplasmic_solid>
-		      <cytoplasmic_to_nuclear_ratio units="dimensionless">6.032</cytoplasmic_to_nuclear_ratio>
-		      <target_solid_cytoplasmic	units="micron^3">1115.92</target_solid_cytoplasmic>
-		      <target_solid_nuclear	units="micron^3">185</target_solid_nuclear>
-		      <target_cytoplasmic_to_nuclear_ratio units="dimensionless">6.13063417088091</target_cytoplasmic_to_nuclear_ratio>
-		      <target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
-		      <!-- <fluid_change_rate units="1/min">0.05</fluid_change_rate> -->
-		        <!-- <cytoplasmic_biomass_change_rate units="1/min">0.0045</cytoplasmic_biomass_change_rate>
-		        <nuclear_biomass_change_rate units="1/min">0.0055</nuclear_biomass_change_rate>
-		        <calcified_fraction units="dimensionless">0.0</calcified_fraction>
-		        <calcification_rate units="1/min">0.0</calcification_rate>
-		        <relative_rupture_volume units="dimensionless">0.0</relative_rupture_volume> -->
-		    </volume>
-		    <mechanics>
-		      <cell_cell_repulsion_strength units="micron/min">3.5</cell_cell_repulsion_strength>
-		    </mechanics>
-		    <secretion>
-		      <substrate name="virus">
-		        <secretion_rate units="1/min">0.0</secretion_rate>
-		        <secretion_target units="substrate density">268.51</secretion_target> <!--saturation_densities-->
-		        <uptake_rate units="1/min">0.0020276</uptake_rate> <!--0.0020276-->
-		        <net_export_rate units="total substrate/min">0.0</net_export_rate>
-		      </substrate>
-		    </secretion>
-		  </phenotype>
-		  <custom_data>
-		    <sample units="" description="">1.0</sample>
-		  </custom_data>
+			<phenotype>
+				<cycle code="5" name="live">
+					<phase_transition_rates units="1/min">
+						<rate start_index="0" end_index="0" fixed_duration="false">0.000735</rate>
+					</phase_transition_rates>
+				</cycle>
+				<volume>
+					<fluid_fraction units="dimensionless">0.75</fluid_fraction>
+					<total units="micron^3">5203.7</total>
+					<fluid units="micron^3">3902.77</fluid>
+					<solid units="micron^3">1300.92</solid>
+					<nuclear units="micron^3">740</nuclear>
+					<cytoplasmic units="micron^3">4463.7</cytoplasmic>
+					<cytoplasmic_fluid units="micron^3">3347.77</cytoplasmic_fluid>
+					<cytoplasmic_solid units="micron^3">1115.92</cytoplasmic_solid>
+					<cytoplasmic_to_nuclear_ratio units="dimensionless">6.032</cytoplasmic_to_nuclear_ratio>
+					<target_solid_cytoplasmic units="micron^3">1115.92</target_solid_cytoplasmic>
+					<target_solid_nuclear units="micron^3">185</target_solid_nuclear>
+					<target_cytoplasmic_to_nuclear_ratio units="dimensionless">6.13063417088091</target_cytoplasmic_to_nuclear_ratio>
+					<target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
+				</volume>
+				<mechanics>
+					<cell_cell_repulsion_strength units="micron/min">3.5</cell_cell_repulsion_strength>
+				</mechanics>
+				<secretion>
+					<substrate name="virus">
+						<secretion_rate units="1/min">0.0</secretion_rate>
+						<secretion_target units="substrate density">268.51</secretion_target>
+						<uptake_rate units="1/min">0.0020276</uptake_rate>
+						<net_export_rate units="total substrate/min">0.0</net_export_rate>
+					</substrate>
+				</secretion>
+			</phenotype>
+			<custom_data>
+				<sample units="" description="">1.0</sample>
+			</custom_data>
 		</cell_definition>
 		<cell_definition name="ctl" ID="3" parent_type="default">
-		  <phenotype>
-		    <cycle code="1" name="ki67 (basic)">
-		      <phase_transition_rates units="1/min">
-		        <rate start_index="0" end_index="1" fixed_duration="false">0.000072</rate>
-		        <rate start_index="1" end_index="0" fixed_duration="false">0.00143</rate>
-		      </phase_transition_rates>
-		    </cycle>
-		    <volume>
-		      <fluid_fraction units="dimensionless">0.75</fluid_fraction>
-		      <total units="micron^3">195.43</total>
-		      <fluid units="micron^3">146.57</fluid>
-		      <solid units="micron^3">48.85</solid>
-		      <nuclear units="micron^3">96.2</nuclear>
-		      <!-- <nuclear_solid units="micron^3">24.1</nuclear_solid>
-		      <nuclear_fluid units="micron^3">72.1</nuclear_fluid> -->
-		      <cytoplasmic units="micron^3">99.23</cytoplasmic>
-		      <cytoplasmic_fluid units="micron^3">74.42</cytoplasmic_fluid>
-		      <cytoplasmic_solid units="micron^3">24.80</cytoplasmic_solid>
-		      <cytoplasmic_to_nuclear_ratio units="dimensionless">1.03</cytoplasmic_to_nuclear_ratio>
-		      <target_solid_cytoplasmic	units="micron^3">24.80</target_solid_cytoplasmic>
-		      <!-- <target_solid_nuclear	units="micron^3">48.8580489486285</target_solid_nuclear> -->
-		      <target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
-		      <target_cytoplasmic_to_nuclear_ratio units="dimensionless">1.03</target_cytoplasmic_to_nuclear_ratio>
-		      <!-- <fluid_change_rate units="1/min">0.05</fluid_change_rate> -->
-		      <!-- <cytoplasmic_biomass_change_rate units="1/min">0.0045</cytoplasmic_biomass_change_rate>
-		      <nuclear_biomass_change_rate units="1/min">0.0055</nuclear_biomass_change_rate>
-		      <calcified_fraction units="dimensionless">0.0</calcified_fraction>
-		      <calcification_rate units="1/min">0.0</calcification_rate>
-		      <relative_rupture_volume units="dimensionless">0.0</relative_rupture_volume> -->
-		    </volume>
-		    <motility>
-		      <speed units="micron/min">4</speed>
-		      <persistence_time units="min">0.0</persistence_time>
-		      <migration_bias units="dimensionless">0.85</migration_bias>
-		    </motility>
-		  </phenotype>
-		  <custom_data>
-		    <sample units="" description="">1.0</sample>
-		  </custom_data>
+			<phenotype>
+				<cycle code="1" name="ki67 (basic)">
+					<phase_transition_rates units="1/min">
+						<rate start_index="0" end_index="1" fixed_duration="false">0.000072</rate>
+						<rate start_index="1" end_index="0" fixed_duration="false">0.00143</rate>
+					</phase_transition_rates>
+				</cycle>
+				<volume>
+					<fluid_fraction units="dimensionless">0.75</fluid_fraction>
+					<total units="micron^3">195.43</total>
+					<fluid units="micron^3">146.57</fluid>
+					<solid units="micron^3">48.85</solid>
+					<nuclear units="micron^3">96.2</nuclear>
+					<cytoplasmic units="micron^3">99.23</cytoplasmic>
+					<cytoplasmic_fluid units="micron^3">74.42</cytoplasmic_fluid>
+					<cytoplasmic_solid units="micron^3">24.80</cytoplasmic_solid>
+					<cytoplasmic_to_nuclear_ratio units="dimensionless">1.03</cytoplasmic_to_nuclear_ratio>
+					<target_solid_cytoplasmic units="micron^3">24.80</target_solid_cytoplasmic>
+					<target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
+					<target_cytoplasmic_to_nuclear_ratio units="dimensionless">1.03</target_cytoplasmic_to_nuclear_ratio>
+				</volume>
+				<motility>
+					<speed units="micron/min">4</speed>
+					<persistence_time units="min">0.0</persistence_time>
+					<migration_bias units="dimensionless">0.85</migration_bias>
+				</motility>
+			</phenotype>
+			<custom_data>
+				<sample units="" description="">1.0</sample>
+			</custom_data>
 		</cell_definition>
 		<cell_definition name="stromal" ID="4" parent_type="cancer">
-		  <phenotype>
-		    <cycle code="5" name="live">
-		      <phase_transition_rates units="1/min">
-		        <rate start_index="0" end_index="0" fixed_duration="false">0.0</rate>
-		      </phase_transition_rates>
-		    </cycle>
-		    <volume>
-		      <total units="micron^3">1767.14</total>
-		      <!-- <fluid_fraction units="dimensionless">0.75</fluid_fraction> -->
-		      <nuclear units="micron^3">500</nuclear>
-		      <fluid units="micron^3">1325.35</fluid>
-		      <solid units="micron^3">441.78</solid>
-		      <!-- <nuclear_solid units="micron^3">125</nuclear_solid>
-		      <nuclear_fluid units="micron^3">375</nuclear_fluid> -->
-		      <cytoplasmic units="micron^3">1267.14</cytoplasmic>
-		      <cytoplasmic_fluid units="micron^3">950.35</cytoplasmic_fluid>
-		      <cytoplasmic_solid units="micron^3">316.78</cytoplasmic_solid>
-		      <cytoplasmic_to_nuclear_ratio units="dimensionless">2.53</cytoplasmic_to_nuclear_ratio>
-		      <target_solid_cytoplasmic	units="micron^3">316.78</target_solid_cytoplasmic>
-		      <target_solid_nuclear	units="micron^3">125</target_solid_nuclear>
-		      <target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
-		      <target_cytoplasmic_to_nuclear_ratio units="dimensionless">2.53</target_cytoplasmic_to_nuclear_ratio>
-		      <!-- <fluid_change_rate units="1/min">0.05</fluid_change_rate> -->
-		      <!-- <cytoplasmic_biomass_change_rate units="1/min">0.0</cytoplasmic_biomass_change_rate>
-		      <nuclear_biomass_change_rate units="1/min">0.0</nuclear_biomass_change_rate>
-		      <calcified_fraction units="dimensionless">0.0</calcified_fraction>
-		      <calcification_rate units="1/min">0.0</calcification_rate>
-		      <relative_rupture_volume units="dimensionless">0.0</relative_rupture_volume> -->
-		    </volume>
-		    <motility>
-		      <speed units="micron/min">0.0</speed>
-		      <persistence_time units="min">0.0</persistence_time>
-		      <migration_bias units="dimensionless">0.0</migration_bias>
-		    </motility>
-		    <secretion>
-		      <substrate name="virus">
-		        <secretion_rate units="1/min">0.0</secretion_rate>
-		        <secretion_target units="substrate density">268.51</secretion_target>
-		        <uptake_rate units="1/min">0.01</uptake_rate>
-		        <net_export_rate units="total substrate/min">0.0</net_export_rate>
-		      </substrate>
-		    </secretion>
-		    </phenotype>
-		  <custom_data>
-		    <sample units="" description="">1.0</sample>
-		  </custom_data>
+			<phenotype>
+				<cycle code="5" name="live">
+					<phase_transition_rates units="1/min">
+						<rate start_index="0" end_index="0" fixed_duration="false">0.0</rate>
+					</phase_transition_rates>
+				</cycle>
+				<volume>
+					<total units="micron^3">1767.14</total>
+					<nuclear units="micron^3">500</nuclear>
+					<fluid units="micron^3">1325.35</fluid>
+					<solid units="micron^3">441.78</solid>
+					<cytoplasmic units="micron^3">1267.14</cytoplasmic>
+					<cytoplasmic_fluid units="micron^3">950.35</cytoplasmic_fluid>
+					<cytoplasmic_solid units="micron^3">316.78</cytoplasmic_solid>
+					<cytoplasmic_to_nuclear_ratio units="dimensionless">2.53</cytoplasmic_to_nuclear_ratio>
+					<target_solid_cytoplasmic units="micron^3">316.78</target_solid_cytoplasmic>
+					<target_solid_nuclear units="micron^3">125</target_solid_nuclear>
+					<target_fluid_fraction units="dimensionless">0.75</target_fluid_fraction>
+					<target_cytoplasmic_to_nuclear_ratio units="dimensionless">2.53</target_cytoplasmic_to_nuclear_ratio>
+				</volume>
+				<motility>
+					<speed units="micron/min">0.0</speed>
+					<persistence_time units="min">0.0</persistence_time>
+					<migration_bias units="dimensionless">0.0</migration_bias>
+				</motility>
+				<secretion>
+					<substrate name="virus">
+						<secretion_rate units="1/min">0.0</secretion_rate>
+						<secretion_target units="substrate density">268.51</secretion_target>
+						<uptake_rate units="1/min">0.01</uptake_rate>
+						<net_export_rate units="total substrate/min">0.0</net_export_rate>
+					</substrate>
+				</secretion>
+			</phenotype>
+			<custom_data>
+				<sample units="" description="">1.0</sample>
+			</custom_data>
 		</cell_definition>
-  </cell_definitions>
+	</cell_definitions>
 	<initial_conditions>
 		<cell_positions type="csv" enabled="true">
 			<folder>./config</folder>
@@ -442,58 +407,53 @@
 	</initial_conditions>
 	<user_parameters>
 		<random_seed type="int" units="dimensionless" description="">0</random_seed>
-		<!-- general -->
 		<kappa type="double" units="dimensionless">1.208</kappa>
 		<c_s type="double" units="mu g/hour^2" description="spring constant">0.01</c_s>
 		<epsilon type="double" units="micron" description="length of voxel">20</epsilon>
-		<xhi type="double" units="cells/micron^2" description="Density of tumour slice">0.0039</xhi> <!-- from article 0.9398--> <!--can be calculate-->
+		<xhi type="double" units="cells/micron^2" description="Density of tumour slice">0.0039</xhi>
 		<proportion type="double" units="dimensionless">0.7</proportion>
 		<p_max type="double" units="1/micron 1/min" description="Maximum proliferation pressure">5.99782</p_max>
 		<pbar_max type="double" units="dimensionless" description="Maximum proliferation simple pressure">219.79</pbar_max>
 		<rho_max type="double" units="virions/micron^3" description="Maximum binding density">0.0125</rho_max>
 		<f_F type="double" units="dimensionless" description="Fluid fraction of the cell">0.75</f_F>
 		<c_j_ccr type="double" unit="micron/min" description="cell-cell repulsive force coefficient">10</c_j_ccr>
-		<!-- tumour -->
 		<A_frag type="double" units="mm^2" description="Total area of tumour slice">5.0644</A_frag>
 		<R type="double" units="micron" description="Radius of tumour slice">1269.7</R>
 		<sigma type="double" units="dimensionless" description="Standard deviation for patch radius">0.4742</sigma>
 		<mu type="double" units="micron" description="Average patch radius">402</mu>
 		<eta type="double" units="micron hour" description="velocity of proportionality">0.133</eta>
-		<K_V type="double" units="micron^3" description="Tumour volume carrying capacity">158000000000000</K_V> <!--1.58e14-->
-		<K_C type="double" units="cells" description="Tumour cell number carrying capacity">4760000</K_C> <!--4.76e6-->
+		<K_V type="double" units="micron^3" description="Tumour volume carrying capacity">158000000000000</K_V>
+		<K_C type="double" units="cells" description="Tumour cell number carrying capacity">4760000</K_C>
 		<r_10 type="double" units="1/min" description="Division rate">0.00143</r_10>
-		<!-- CD4 -->
 		<V_N_CD4 type="double" units="micron^3" description="Total nuclear volume (CD4 cell)">95.2</V_N_CD4>
+		<V_N_CD4 type="double" units="micron^3" description="CD4 nuclear volume">95.21</V_N_CD4>
 		<N_CD4 type="int" units="cells" description="Number of CD4 cells">39</N_CD4>
 		<R_CD4 type="double" units="micron" description="Radius of a CD4+ T cell">3.6</R_CD4>
-		<r_01_CD4 type="double" units="dimensionless" description="TH_prolif_rate">0.000079</r_01_CD4><!--7.9e-5-->
+		<r_01_CD4 type="double" units="dimensionless" description="TH_prolif_rate">0.000079</r_01_CD4>
 		<S_chemokine_CD4 type="double" units="1/min">0.0417</S_chemokine_CD4>
 		<TH_prolif_increase_due_to_stimulus type="double" units="dimensionless">100</TH_prolif_increase_due_to_stimulus>
-		<!-- GBM -->
 		<V_N_GBM type="double" units="micron^3" description="Total nuclear volume (glioblastoma cell)">740</V_N_GBM>
 		<R_GBM type="double" units="micron" description="Radius of glioblastoma cell">10.8</R_GBM>
 		<beta type="double" units="1/min" description="Tumour cell proliferation rate">0.000735</beta>
 		<u_g type="double" units="1/min 1/micron^3" description="Binding rate virus by glioblastoma cells">0.0020276</u_g>
 		<N_GBM_sparse type="int" units="cells">5580</N_GBM_sparse>
 		<N_GBM_dense type="int" units="cells">12556</N_GBM_dense>
-		<!-- CD8 -->
 		<V_N_CD8 type="double" units="micron^3" description="Total nuclear volume (CD8 cell)">96.2</V_N_CD8>
+		<V_N_CD8 type="double" units="micron^3">96.23</V_N_CD8>
 		<N_CD8 type="int" units="cells" description="Number of CD8 cells">22</N_CD8>
 		<R_CD8 type="double" units="micron" description="Radius of a CD8+ T cell">3.6</R_CD8>
-		<r_01_CD8 type="double" units="dimensionless" description="CTL_prolif_rate">0.000072</r_01_CD8><!--7.2e-5-->
+		<r_01_CD8 type="double" units="dimensionless" description="CTL_prolif_rate">0.000072</r_01_CD8>
 		<d_attach type="double" units="micron" description="CD8+ T to infected attach cell distance">50</d_attach>
 		<nu_max type="double" units="micron/min" description="Maximum speed of CD8+ T cells">24.6</nu_max>
 		<tau type="double" units="min" description="Attached time CD8+T cell to infected cell">50</tau>
 		<b_CD8 type="double" units="dimensionless" description="CD8 migration bias">0.85</b_CD8>
 		<CTL_prolif_increase_due_to_stimulus type="double" units="dimensionless">100</CTL_prolif_increase_due_to_stimulus>
-		<!-- stromal -->
 		<V_N_stromal type="double" units="micron^3" description="Total nuclear volume (stromal cell)">500</V_N_stromal>
 		<R_stromal type="double" units="micron" description="Radius of a stromal cell">7.5</R_stromal>
 		<nu type="double" units="micron/min" description="base migration speed">4</nu>
-		<u_s type="double" units="1/min 1/micron^3" description="Binding rate virus by stromal cells">1</u_s><!--from article 0.01-->
+		<u_s type="double" units="1/min 1/micron^3" description="Binding rate virus by stromal cells">1</u_s>
 		<N_stroma_sparse type="int" units="cells">14306</N_stroma_sparse>
 		<N_stroma_dense type="int" units="cells">2861</N_stroma_dense>
-		<!-- virus -->
 		<lambda_virus type="double" units="1/min" description="Decay rate for virions">0.0029</lambda_virus>
 		<D_virus type="double" units="micron^2/min" description="Diffusion coefficient for virus">1.4766</D_virus>
 		<alpha type="double" units="virions" description="Virus burst size">6600</alpha>
@@ -502,16 +462,12 @@
 		<m_half type="double" units="virions" description="infection threshold half-effect">10</m_half>
 		<rho_star_virus type="double" units="amount/micron" description="Virus saturation concentration">268.51</rho_star_virus>
 		<V_0 type="double" units="virions/micron^3" description="Initial concentration of virus">3.0248</V_0>
-		<!-- chemokine -->
-		<lambda_chemokine type="double" units="1/min" description="Decay rate for chemokine">0.00000806</lambda_chemokine> <!--8.06e-6-->
+		<lambda_chemokine type="double" units="1/min" description="Decay rate for chemokine">0.00000806</lambda_chemokine>
 		<D_chemokine type="double" units="micron^2/min" description="Diffusion coefficient for chemokine">555.56</D_chemokine>
 		<nu_star type="double" units="pg/micron" description="Chemokine speed half-concentration">0.005</nu_star>
 		<rho_star_chemokine type="double" units="amount/micron" description="Chemokine saturation concentration">5</rho_star_chemokine>
-		<!-- tmz -->
-		<!-- diffusion coefficient for TMZ =5.2324 micrometer^2/min, and decay rate =0.0064/min-->
 		<lambda_tmz type="double" units="1/min" description="Decay rate for tmz">0.0064</lambda_tmz>
 		<D_tmz type="double" units="micron^2/min" description="Diffusion coefficient for tmz">5.2324</D_tmz>
-		<!-- The effect increase with the concentration according to the function TMZ/(TMZ+IC50), where IC50=0.0194microgram/microliter-->
 		<IC50 type="double" units="mg/ml">0.0195</IC50>
-  </user_parameters>
+	</user_parameters>
 </PhysiCell_settings>

@@ -514,4 +514,5 @@
 		<!-- The effect increase with the concentration according to the function TMZ/(TMZ+IC50), where IC50=0.0194microgram/microliter-->
 		<IC50 type="double" units="mg/ml">0.0195</IC50>
   </user_parameters>
+
 </PhysiCell_settings>

@@ -219,9 +219,10 @@ void setup_microenvironment(void) 																							// done
 	// initialize BioFVM
 
 	initialize_microenvironment();
-
-	set_up_wall();
 	set_up_virus();
+	set_up_wall();
+	// testing();
+	// old_testing();
 	return;
 }
 void setup_tissue( void ) 																											// done
@@ -441,7 +442,7 @@ void custom_update_cell_velocity( Cell* pCell, Phenotype& phenotype, double dt)
 double time_to_radius_increase_formula(int i)
 {
   // fabulous pi number
-  double pi = 3.141592653589793238462;
+  double pi = 3.141592653;
   // fix beta, not really appropriate with tmz treatment
   // initial tumour radius (not dynamic radius...)
   double i_r = parameters.doubles("R");
@@ -712,27 +713,27 @@ double maximal_pressure(Cell* pCell)
 }
 
 // tmz effect
-void cancer_tmz_effect(Cell* pCell, Phenotype& phenotype)
-{
-	static int tmz_index = microenvironment.find_density_index("tmz");
-	static int apoptosis_model_index = phenotype.death.find_death_model_index("apoptosis");
-
-	int cycle_start_index = live.find_phase_index(PhysiCell_constants::live);
-	int cycle_end_index = live.find_phase_index(PhysiCell_constants::live);
-
-	double ec50 = parameters.doubles("IC50");
-
-	// GBM cell default proliferation rate
-	double beta = parameters.doubles("beta");
-	double tmz_amount = pCell->nearest_density_vector()[tmz_index];
-	double tmz_effect = tmz_amount/(tmz_amount+ec50);
-
-  phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = beta*(1-tmz_effect);
-
-	//need to add it when including TMZ
-	phenotype.death.rates[apoptosis_model_index] = beta*(tmz_effect);
-	return;
-}
+// void cancer_tmz_effect(Cell* pCell, Phenotype& phenotype)
+// {
+// 	static int tmz_index = microenvironment.find_density_index("tmz");
+// 	static int apoptosis_model_index = phenotype.death.find_death_model_index("apoptosis");
+//
+// 	int cycle_start_index = live.find_phase_index(PhysiCell_constants::live);
+// 	int cycle_end_index = live.find_phase_index(PhysiCell_constants::live);
+//
+// 	double ec50 = parameters.doubles("IC50");
+//
+// 	// GBM cell default proliferation rate
+// 	double beta = parameters.doubles("beta");
+// 	double tmz_amount = pCell->nearest_density_vector()[tmz_index];
+// 	double tmz_effect = tmz_amount/(tmz_amount+ec50);
+//
+//   phenotype.cycle.data.transition_rate(cycle_start_index, cycle_end_index) = beta*(1-tmz_effect);
+//
+// 	//need to add it when including TMZ
+// 	phenotype.death.rates[apoptosis_model_index] = beta*(tmz_effect);
+// 	return;
+// }
 
 // for cancer cells
 double resample_movement_type() 									                              // done
@@ -1347,8 +1348,8 @@ void th_phenotype(Cell* pCell, Phenotype& phenotype, double dt) 								// done
 }
 void cancer_phenotype(Cell* pCell, Phenotype& phenotype, double dt)
 {
-	// TMZ effect before pressure
-	cancer_tmz_effect(pCell, phenotype);
+	// // TMZ effect before pressure
+	// cancer_tmz_effect(pCell, phenotype);
 
 	static int wall_index = microenvironment.find_density_index("wall");
 
@@ -1407,22 +1408,9 @@ void stromal_phenotype(Cell* pCell, Phenotype& phenotype, double dt) 						// do
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void set_up_wall()
 {
-	static int virus_index = microenvironment.find_density_index("wall");
+	static int wall_index = microenvironment.find_density_index("wall");
 
 	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
 	{
@@ -1436,7 +1424,7 @@ void set_up_wall()
 		{
 			microenvironment(n)[wall_index] = 3.5;
 		}
-		else if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>250*250 )
+		else if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")*250/1270)*(parameters.doubles("R")*250/1270) )
 		{
 			microenvironment(n)[wall_index] = 5;
 		}
@@ -1447,19 +1435,32 @@ void set_up_wall()
 	}
 	return;
 }
-
 void set_up_virus()
 {
+	static int virus_index = microenvironment.find_density_index("virus");
+
 	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
 	{
 		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-		if( (ECMdense[0])*(ECMdense[0])+(ECMdense[1])*(ECMdense[1])<10*10)// Centre
+		if( (ECMdense[0])*(ECMdense[0])+(ECMdense[1])*(ECMdense[1])<20*20)// Centre
 		{
 			microenvironment(n)[virus_index] = 7.12;
 		}
 	}
 	return;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // void testing()

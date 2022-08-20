@@ -96,12 +96,6 @@ std::vector<double> go_times_cumulative(void);
 std::vector<double> persistance_distribution(void);
 std::vector<double> speed_cumulative(void);
 
-
-
-void set_up_wall();
-void set_up_virus();
-
-
 void testing();
 
 // old
@@ -113,7 +107,8 @@ bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt );
 // double CSF_conc_to_density(double time);
 // double one_column_bin_reader(int idx);
 
-
+void set_up_wall();
+void set_up_virus();
 // custom functions can go here
 bool am_i_dead(Cell* pCell);
 bool am_i_infected(Cell* pCell);

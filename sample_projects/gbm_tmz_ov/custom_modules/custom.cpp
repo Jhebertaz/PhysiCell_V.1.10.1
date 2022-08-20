@@ -592,7 +592,47 @@ std::vector<double> speed_distribution()
 	return speed_vec;
 }
 
+void set_up_wall()
+{
+	static int wall_index = microenvironment.find_density_index("wall");
 
+	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
+	{
+		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
+
+		if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")+10)*(parameters.doubles("R")+10))
+		{
+			microenvironment(n)[wall_index] = 1;
+		}
+		else if(ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")-10)*(parameters.doubles("R")-10))
+		{
+			microenvironment(n)[wall_index] = 3.5;
+		}
+		else if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")*250/1270)*(parameters.doubles("R")*250/1270) )
+		{
+			microenvironment(n)[wall_index] = 5;
+		}
+		else
+		{
+			microenvironment(n)[wall_index] = 10;
+		}
+	}
+	return;
+}
+void set_up_virus()
+{
+	static int virus_index = microenvironment.find_density_index("virus");
+
+	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
+	{
+		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
+		if( (ECMdense[0])*(ECMdense[0])+(ECMdense[1])*(ECMdense[1])<20*20)// Centre
+		{
+			microenvironment(n)[virus_index] = 7.12;
+		}
+	}
+	return;
+}
 
 // custom functions
 bool am_i_dead(Cell* pCell) 																										// done
@@ -1412,54 +1452,6 @@ void stromal_phenotype(Cell* pCell, Phenotype& phenotype, double dt) 						// do
 
 
 
-
-
-
-
-
-
-
-
-void set_up_wall()
-{
-	static int virus_index = microenvironment.find_density_index("wall");
-
-	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-
-		if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")+10)*(parameters.doubles("R")+10))
-		{
-			microenvironment(n)[wall_index] = 1;
-		}
-		else if(ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>(parameters.doubles("R")-10)*(parameters.doubles("R")-10))
-		{
-			microenvironment(n)[wall_index] = 3.5;
-		}
-		else if( ECMdense[0]*ECMdense[0]+ECMdense[1]*ECMdense[1]>250*250 )
-		{
-			microenvironment(n)[wall_index] = 5;
-		}
-		else
-		{
-			microenvironment(n)[wall_index] = 10;
-		}
-	}
-	return;
-}
-
-void set_up_virus()
-{
-	for( int n = 0 ; n < microenvironment.mesh.voxels.size(); n++ )
-	{
-		std::vector<double> ECMdense = microenvironment.mesh.voxels[n].center;
-		if( (ECMdense[0])*(ECMdense[0])+(ECMdense[1])*(ECMdense[1])<10*10)// Centre
-		{
-			microenvironment(n)[virus_index] = 7.12;
-		}
-	}
-	return;
-}
 
 
 // void testing()

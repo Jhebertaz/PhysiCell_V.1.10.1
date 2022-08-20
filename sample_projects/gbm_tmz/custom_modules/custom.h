@@ -97,18 +97,17 @@ std::vector<double> persistance_distribution(void);
 std::vector<double> speed_cumulative(void);
 
 
-
 void set_up_wall();
 void set_up_virus();
 
-
-void testing();
-
-// old
-void old_testing();
-void old_immune_cell_placement();
-void old_setup_tissue_circle_immune();
-bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt );// old one
+//
+// void testing();
+//
+// // old
+// void old_testing();
+// void old_immune_cell_placement();
+// void old_setup_tissue_circle_immune();
+// bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt );// old one
 
 // double CSF_conc_to_density(double time);
 // double one_column_bin_reader(int idx);
@@ -129,7 +128,6 @@ double resample_persistence_time();
 bool immune_cell_trigger_apoptosis(Cell* pAttacker, Cell* pTarget);
 Cell* immune_cell_check_neighbors_for_attachment(Cell* pAttacker);
 bool immune_cell_attempt_attachment( Cell* pAttacker, Cell* pTarget);
-void ctl_virus(Cell* pCell, Phenotype& phenotype);
 void add_elastic_velocity(Cell* pActingOn, Cell* pAttachedTo, double elastic_constant);
 void extra_elastic_attachment_mechanics(Cell* pCell);
 
@@ -138,17 +136,8 @@ double equilibrium_spacing();
 double pressure_scale(Cell* pCell);
 double maximal_pressure(Cell* pCell);
 
-
 // tmz effect
 void cancer_tmz_effect(Cell* pCell, Phenotype& phenotype);
-
-
-
-// virus infection dynamics
-double update_virus_uptake_rate(Cell* pCell, Phenotype& phenotype);
-void virus_replication(Cell* pCell, Phenotype& phenotype, double dt);
-void virus_induced_lysis(Cell* pCell, Phenotype& phenotype, double dt);
-void checked_for_lysis(Cell* pCell, Phenotype& phenotype, double dt);
 
 
 // custom movement functions
@@ -158,11 +147,6 @@ void cancer_movement(Cell* pCell, Phenotype& phenotype);
 void ctl_movement(Cell* pCell, Phenotype& phenotype);
 void stromal_movement(Cell* pCell, Phenotype& phenotype);
 
-// custom infection dynamics functions
-void th_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt);
-void cancer_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt);
-void ctl_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype);
-void stromal_virus_infection_dynamics(Cell* pCell, Phenotype& phenotype, double dt);
 
 // custom phenotype functions
 void th_phenotype(Cell* pCell, Phenotype& phenotype, double dt);

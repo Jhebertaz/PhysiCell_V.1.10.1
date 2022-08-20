@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PhysiCell_settings version="devel-version">
 	<domain>
-		<x_min>-1492</x_min>
-		<x_max>1492</x_max>
-		<y_min>-1492</y_min>
-		<y_max>1492</y_max>
+		<x_min>-1000</x_min>
+		<x_max>1000</x_max>
+		<y_min>-1000</y_min>
+		<y_max>1000</y_max>
 		<z_min>-10</z_min>
 		<z_max>10</z_max>
 		<dx>20</dx>
@@ -412,12 +412,12 @@
 	<initial_conditions>
 		<cell_positions type="csv" enabled="true">
 			<folder>./config</folder>
-			<filename>20_X17-772N-B5_20.csv</filename>
+			<filename>14_NP15-123-22B_14.csv</filename>
 		</cell_positions>
 	</initial_conditions>
 	<user_parameters>
 		<random_seed type="int" units="dimensionless" description="">0</random_seed>
-		<A_frag type="double" units="mm^2" description="Total area of tumour slice">1.12</A_frag>
+		<A_frag type="double" units="mm^2" description="Total area of tumour slice">0.989</A_frag>
 		<alpha type="double" units="virions" description="Virus burst size">6600</alpha>
 		<beta type="double" units="1/min" description="Tumour cell proliferation rate">0.000735</beta>
 		<c_j_ccr type="double" unit="micron/min" description="cell-cell repulsive force coefficient">10</c_j_ccr>
@@ -431,8 +431,8 @@
 		<eta type="double" units="micron hour" description="velocity of proportionality">0.133</eta>
 		<f_F type="double" units="dimensionless" description="Fluid fraction of the cell">0.75</f_F>
 		<gamma type="double" units="1/min" description="virus replication rate">0.00353</gamma>
-		<K_V type="double" units="micron^3" description="Tumour volume carrying capacity">74272440944882</K_V>
-		<K_C type="double" units="cells" description="Tumour cell number carrying capacity">2841720000</K_C>
+		<K_V type="double" units="micron^3" description="Tumour volume carrying capacity">74770078740157</K_V>
+		<K_C type="double" units="cells" description="Tumour cell number carrying capacity">2252567</K_C>
 		<lambda_virus type="double" units="1/min" description="Decay rate for virions">0.0029</lambda_virus>
 		<lambda_chemokine type="double" units="1/min" description="Decay rate for chemokine">0.00000806</lambda_chemokine>
 		<lambda_tmz type="double" units="1/min" description="Decay rate for tmz">0.0064</lambda_tmz>
@@ -442,7 +442,7 @@
 		<nu type="double" units="micron/min" description="base migration speed">4</nu>
 		<p_max type="double" units="1/micron 1/min" description="Maximum proliferation pressure">5.99782</p_max>
 		<pbar_max type="double" units="dimensionless" description="Maximum proliferation simple pressure">219.79</pbar_max>
-		<R type="double" units="micron" description="Radius of tumour slice">597</R>
+		<R type="double" units="micron" description="Radius of tumour slice">601</R>
 		<R_GBM type="double" units="micron" description="Radius of glioblastoma cell">10.75</R_GBM>
 		<R_stromal type="double" units="micron" description="Radius of a stromal cell">7.5</R_stromal>
 		<R_CD4 type="double" units="micron" description="Radius of a CD4+ T cell">3.59</R_CD4>
@@ -462,7 +462,7 @@
 		<V_N_CD4 type="double" units="micron^3" description="Total nuclear volume (CD4 cell)">95.21</V_N_CD4>
 		<V_N_CD8 type="double" units="micron^3" description="Total nuclear volume (CD8 cell)">96.23</V_N_CD8>
 		<V_0 type="double" units="virions/micron^3" description="Initial concentration of virus">3.0248</V_0>
-		<xhi type="double" units="cells/micron^2" description="Density of tumour slice">0.001</xhi>
+		<xhi type="double" units="cells/micron^2" description="Density of tumour slice">0.00418</xhi>
 		<IC50 type="double" units="mg/ml">0.0195</IC50>
 		<CTL_prolif_increase_due_to_stimulus type="double" units="dimensionless">100</CTL_prolif_increase_due_to_stimulus>
 		<TH_prolif_increase_due_to_stimulus type="double" units="dimensionless">100</TH_prolif_increase_due_to_stimulus>
